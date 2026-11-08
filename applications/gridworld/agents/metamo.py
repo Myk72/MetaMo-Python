@@ -19,6 +19,13 @@ from applications.gridworld.runtime import (
     transition_for_action,
 )
 from applications.gridworld.state import create_initial_motivational_state
+from applications.gridworld.predictive_self_model import GridWorldPredictiveSelfModel
+from applications.gridworld.transition_record import (
+    GridWorldTransitionRecord,
+    MotivationalSnapshot,
+    MoveForecastInputs,
+    PendingGridWorldTransition,
+)
 from core.state import Action, MotivationalState
 
 
@@ -59,6 +66,7 @@ class MetaMoAgent:
         hard_safety: bool = True,
         hard_safety_risk_threshold: float = 1.0,
         compositionality_audit_interval: int = 10,
+        record_transitions: bool = False,
     ):
         self.seed = seed
         self.grid_size = grid_size
@@ -94,6 +102,7 @@ class MetaMoAgent:
         self.hard_safety = hard_safety
         self.hard_safety_risk_threshold = hard_safety_risk_threshold
         self.compositionality_audit_interval = compositionality_audit_interval
+        self.record_transitions = record_transitions
         self.reward_shaping = RewardShapingConfig(
             progress_weight=progress_shaping_weight,
             lava_penalty=lava_shaping_penalty,
@@ -103,9 +112,17 @@ class MetaMoAgent:
         self.rng = random.Random(seed)
 
         self.runtime: GridWorldRuntime = make_gridworld_runtime()
+        self.predictive_self_model = GridWorldPredictiveSelfModel(
+            self.runtime.appraisal_profile
+        )
         self.mot = create_initial_motivational_state()
         self._pending_state: Optional[MotivationalState] = None
         self._pending_action: Optional[Action] = None
+        self._pending_transition: Optional[PendingGridWorldTransition] = None
+        self.transition_records: list[GridWorldTransitionRecord] = []
+        self._next_transition_id = 0
+        self._episode_id = 0
+        self._episode_step = 0
         self.q_table: dict[tuple, np.ndarray] = {}
         self.visit_counts: dict[tuple, np.ndarray] = {}
 
@@ -116,6 +133,9 @@ class MetaMoAgent:
         self.mot = create_initial_motivational_state()
         self._pending_state = None
         self._pending_action = None
+        self._pending_transition = None
+        self._episode_id += 1
+        self._episode_step = 0
         self._decision_count = 0
 
     def _encode(self, state: dict) -> tuple:
@@ -304,6 +324,8 @@ class MetaMoAgent:
         record_compositionality: bool = False,
     ) -> tuple[int, dict]:
         """Select an action using either legacy addition or composed perspectives."""
+        if self.record_transitions and self._pending_state is not None:
+            raise RuntimeError("commit the pending motivational transition before selecting again")
         stimulus = build_stimulus(state, self.mot, runtime=self.runtime)
         candidates = build_candidates(state, self.mot, runtime=self.runtime)
         perspective_scores = perspective_candidate_scores(
@@ -416,6 +438,34 @@ class MetaMoAgent:
         )
         self._pending_state = next_state
         self._pending_action = action
+        if self.record_transitions:
+            move_inputs = MoveForecastInputs(
+                hazard_risk=float(action.metadata["hazard_risk"]),
+                mineral_progress=float(action.metadata["mineral_progress"]),
+                mineral_collected=float(action.metadata["mineral_collected"]),
+                safe_mobility_after=float(action.metadata["safe_mobility_after"]),
+            )
+            forecast = self.predictive_self_model.forecast(
+                transition_id=self._next_transition_id,
+                action_id=action.id,
+                staged_state=next_state,
+                current_stimulus=stimulus,
+                move_inputs=move_inputs,
+            )
+            self._pending_transition = PendingGridWorldTransition(
+                transition_id=self._next_transition_id,
+                episode_id=self._episode_id,
+                step_index=self._episode_step,
+                action_index=action_idx,
+                action_id=action.id,
+                current_state=MotivationalSnapshot.from_state(self.mot),
+                current_stimulus=stimulus,
+                staged_state=MotivationalSnapshot.from_state(next_state),
+                move_inputs=move_inputs,
+                forecast=forecast,
+            )
+            self._next_transition_id += 1
+            self._episode_step += 1
 
         alpha = {
             "greedy_action": greedy_action,
@@ -483,12 +533,65 @@ class MetaMoAgent:
         }
         return action_idx, alpha
 
-    def commit_motivational_transition(self) -> None:
+    def commit_motivational_transition(
+        self,
+        *,
+        next_env_state: Optional[dict] = None,
+        done: Optional[bool] = None,
+        executed_action: Optional[int] = None,
+    ) -> None:
         """Commit the already-selected MetaMo transition without learning Q."""
         if self._pending_state is not None:
+            pending = self._pending_transition
+            if pending is not None:
+                if next_env_state is None or done is None or executed_action is None:
+                    raise ValueError(
+                        "recording a transition requires next_env_state, done, and executed_action"
+                    )
+                if executed_action != pending.action_index:
+                    raise ValueError("executed action differs from the selected action")
+                next_stimulus = build_stimulus(
+                    next_env_state,
+                    self._pending_state,
+                    runtime=self.runtime,
+                )
+                # This is a diagnostic appraisal target, not a live state update.
+                observed_next_appraisal = (
+                    None
+                    if done
+                    else MotivationalSnapshot.from_state(
+                        self.runtime.appraisal_profile.appraise(
+                            self._pending_state, next_stimulus
+                        )
+                    )
+                )
+            elif self.record_transitions:
+                raise RuntimeError("pending motivational transition has no trace")
             self.mot = self._pending_state
+            record = None
+            if pending is not None:
+                record = GridWorldTransitionRecord(
+                    transition_id=pending.transition_id,
+                    episode_id=pending.episode_id,
+                    step_index=pending.step_index,
+                    action_index=pending.action_index,
+                    action_id=pending.action_id,
+                    current_state=pending.current_state,
+                    current_stimulus=pending.current_stimulus,
+                    staged_state=pending.staged_state,
+                    committed_state=MotivationalSnapshot.from_state(self.mot),
+                    next_stimulus=next_stimulus,
+                    done=bool(done),
+                    move_inputs=pending.move_inputs,
+                    forecast=pending.forecast,
+                    observed_next_appraisal=observed_next_appraisal,
+                )
             self._pending_state = None
             self._pending_action = None
+            self._pending_transition = None
+            if record is not None:
+                self.transition_records.append(record)
+                self.predictive_self_model.observe(record)
 
     def update(
         self,
@@ -501,6 +604,12 @@ class MetaMoAgent:
         alpha: dict,
     ):
         """Apply the same shaped tabular Q update used by the baseline."""
+        if (
+            self.record_transitions
+            and self._pending_transition is not None
+            and action != self._pending_transition.action_index
+        ):
+            raise ValueError("executed action differs from the selected action")
         s = self._encode(state)
         ns = self._encode(next_state)
         q_values = self._q_values(s)
@@ -516,7 +625,11 @@ class MetaMoAgent:
         q_values[action] += self.alpha * td_error
         self.visit_counts[s][action] += 1.0
 
-        self.commit_motivational_transition()
+        self.commit_motivational_transition(
+            next_env_state=next_state,
+            done=done,
+            executed_action=action,
+        )
 
     def decay_epsilon(self):
         self.epsilon = max(self.epsilon_min, self.epsilon * self.epsilon_decay)

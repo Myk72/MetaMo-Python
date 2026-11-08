@@ -216,6 +216,7 @@ class GridWorldProfile:
                 "safe_exit_delta": safe_exit_delta,
                 "energy_impact": energy_impact,
                 "next_lava_distance": next_lava_dist,
+                "safe_mobility_after": self._safe_move_fraction(next_pos, lava_cells),
             },
         )
 

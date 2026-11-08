@@ -92,7 +92,7 @@ Q-table from improvement supplied by MetaMo while actions are being chosen:
 Run the lightweight validation:
 
 ```powershell
-python -m applications.gridworld.evaluation.smoke_checks
+python -m unittest discover -s tests
 ```
 
 Run and plot the default controlled evaluation:
@@ -122,3 +122,50 @@ python -m applications.gridworld.simulation.main
 
 The non-visual application requires NumPy. Generated results are written under
 `eval_results/` and are not application source.
+
+## Predictive self-model experiments
+
+`MetaMoAgent(record_transitions=True)` freezes a forecast before each action,
+records the observed outcome, and updates the diagnostic predictor afterward.
+Ordinary moves use the known GridWorld rules. After mineral collection, the
+predictor learns the median proximity of the respawned mineral from a bounded
+history. OpenPsi appraises the predicted stimulus to forecast the next
+motivational response. These forecasts do not select live actions.
+
+The retained experiments cover prediction accuracy, replication, and whether
+forecasts help decisions:
+
+| Experiment | Purpose |
+|---|---|
+| `evaluation.self_model` | Compare rules, learned collection statistics, contextual/action averages, and persistence on held-out episodes; verify unchanged live behavior. |
+| `evaluation.collection_robustness` | Replicate collection forecasting across independent seed splits with minimum sample counts. |
+| `evaluation.future_conflict` | Predict future task/safety disagreement and audit changed choices through paired cloned rollouts. |
+| `evaluation.conflict_energy_budget` | Test whether conflict predicts energy depletion better than a direct energy-and-distance reference. |
+
+Run from the repository root:
+
+```powershell
+python -m applications.gridworld.evaluation.self_model
+python -m applications.gridworld.evaluation.collection_robustness
+python -m applications.gridworld.evaluation.future_conflict --rollout-horizon 10
+python -m applications.gridworld.evaluation.conflict_energy_budget --output artifacts/self_model/conflict_energy_budget.json
+```
+
+Collection learning improved prediction in the completed replication. Future
+conflict was also predictable, but the tested conflict penalty did not reliably
+improve reward or safety. The experimental energy world adds an energy cost per
+move and a depletion penalty; it is not the standard GridWorld environment.
+Across 137 audited states, its current-conflict rule, learned-conflict rule, and
+direct energy reference produced 61, 62, and 56 depleted continuations,
+respectively. These are correlated branch outcomes, not independent episodes.
+
+The energy experiment's settings and results are retained in
+[`conflict_energy_budget.summary.json`](../../artifacts/self_model/conflict_energy_budget.summary.json).
+Full candidate traces are regenerable and ignored by Git. Conflict accuracy is
+scored only where all future decisions occur; safety measurements include early
+depletion. No neural network or learned intervention is enabled in the agent.
+
+The earlier valence-only ranking, short/long-horizon wrapper, and
+boundary-pressure probe have been retired. Their findings remain constraints on
+future work: improved mood prediction did not imply better task choices, and
+the simple pressure reference outperformed the tested statistical corrections.

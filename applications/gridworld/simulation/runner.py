@@ -159,7 +159,11 @@ def step_metamo(metamo, env_mm, s_mm, ep_log_mm, reward_mm, lava_mm, clank_fn=No
     """
     a_mm, alpha_mm = metamo.select_action(s_mm)
     ns_mm, r_mm, done_mm, info_mm = env_mm.step(a_mm)
-    metamo.commit_motivational_transition()
+    metamo.commit_motivational_transition(
+        next_env_state=ns_mm,
+        done=done_mm,
+        executed_action=a_mm,
+    )
 
     reward_mm += r_mm
     if ns_mm["in_lava"]:

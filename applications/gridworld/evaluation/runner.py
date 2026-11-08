@@ -305,7 +305,11 @@ def _run_episode(
                 agent.update(state, action, reward, next_state, done)
         elif policy == "metamo":
             # Evaluation freezes Q while preserving MetaMo's state transition.
-            agent.commit_motivational_transition()
+            agent.commit_motivational_transition(
+                next_env_state=next_state,
+                done=done,
+                executed_action=action,
+            )
 
         total_reward += reward
         if next_state["in_lava"]:
