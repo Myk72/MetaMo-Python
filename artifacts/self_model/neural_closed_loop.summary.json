@@ -1,0 +1,767 @@
+{
+  "protocol": {
+    "settings": {
+      "episodes_per_split": 60,
+      "seed_start": 18000000,
+      "seed_stride": 100000,
+      "bootstrap_samples": 2000
+    },
+    "original_settings": {
+      "splits": 3,
+      "pretrain_episodes": 30,
+      "train_episodes": 80,
+      "validation_episodes": 20,
+      "test_episodes": 24,
+      "max_steps": 40,
+      "horizon": 5,
+      "hidden_units": 32,
+      "max_epochs": 300,
+      "patience": 30,
+      "initializations": 3,
+      "batch_size": 128,
+      "learning_rate": 0.001,
+      "weight_decay": 0.0001,
+      "ridge_penalties": [
+        0.01,
+        0.1,
+        1.0,
+        10.0,
+        100.0
+      ],
+      "seed_start": 7000000,
+      "seed_stride": 100000,
+      "agent_seed": 100,
+      "network_seed": 1000
+    },
+    "source_sha256": {
+      "artifacts\\self_model\\neural_five_step\\settings.json": "dfa3cfcb722c9feb5b91d644b398d13bbb9f15213e6556546330009205b306ee",
+      "artifacts\\self_model\\neural_learning_curve\\protocol.json": "2dde803857c6875032767fc98c80e2cdfc73857e6bc93e05923bb49ee96c13c8",
+      "artifacts\\self_model\\neural_action_ranking\\protocol.json": "3c3c85885ad25495a71a84ada60c19205c4af46e6a53ba09daed150370afe07f",
+      "artifacts\\self_model\\neural_learning_curve\\split_1\\model_320.npz": "2577cbdc389bd3cfcf1eb6b23b082057ed3bb777a6d0570fe609385f40b38b40",
+      "artifacts\\self_model\\neural_action_ranking\\split_1\\readouts.npz": "aae8c6b2042503d8bf75a44796080e4b68ee38c2d5182619bfd907f0aac51739",
+      "artifacts\\self_model\\neural_learning_curve\\split_2\\model_320.npz": "d8637ae3e048b29835342efd5ea50ef26f849f6a4aa2f7747c1c01237efd7513",
+      "artifacts\\self_model\\neural_action_ranking\\split_2\\readouts.npz": "aacf0dca2518365655456aa947a3d24dfeb50d20003c28e589bc1d32a9303ab2",
+      "artifacts\\self_model\\neural_learning_curve\\split_3\\model_320.npz": "5fde1d9b80ce22bd7742b9b54436396c66e14771dfdaa38bf7056f978689a013",
+      "artifacts\\self_model\\neural_action_ranking\\split_3\\readouts.npz": "a0ca3482d539a8f9f052e2893baa74b411503cd052a2408dc49fadbcda619f23"
+    },
+    "methods": [
+      "current_selector",
+      "direct_features",
+      "neural_state"
+    ],
+    "new_lava_layout_sha256": {
+      "18000000": "722fd8927189335251a87a49eb652ff27ea8f48a238388c29ce97fa14d4adf52",
+      "18000001": "57649157910ad3444533ed1982ee8f298b731b77787626c710578bf4dab995d6",
+      "18000002": "6034d7a53f47711324a064bee19e3f05fb3730b1f1d7aa31a80326bdee1a3bc8",
+      "18000003": "773f5ea267f8a47b8026f922c2c7ee1f6d1863a726afbd88e0e5d3c923aa8dfd",
+      "18000004": "a98d2a603355019fa2306135a843e9cf6721e1937c376b2772944cad894a904d",
+      "18000005": "f4b6d1f26ac6881be497c94e3ed1b2d114c4ebcff52d14c490eb8f3ceecc53f8",
+      "18000006": "e90801283ea9f97549e05c4cd967c303740e5177365683b5ffa76f7929950feb",
+      "18000007": "b3c845ef2671bedc8f2693bde60d66a07d2f84c17aa3c2104019af2624589535",
+      "18000008": "a362656d57b767605ad90b13cf86638e22324fc99247518dedf4665a2bdd8be2",
+      "18000009": "41d0a216d6d24501b702e398e6d224dd2fa5e3e533ce5a0be6a6facd4245ab6d",
+      "18000010": "00af28d120297be066767f158e7f1b38c0c5ee06eb48d9adb7fd00250c226d12",
+      "18000011": "4f123d9931a4fea3cf746606bb73f49b528de4ce5b95a710127386533a3e9edc",
+      "18000012": "68086fb310836bec5e0eefb5505b7bcbb16f8818c1abf39addf89a45a8d31493",
+      "18000013": "2edbc434997112290973da0b2260a6a9b0513bd2684b9844e4447c50f097fbd6",
+      "18000014": "7d2ca5d3f823cf5d1691105f6c0c4af7b344c813fcf24e8e0f9ccf1d1efd29ba",
+      "18000015": "2bf7444af9e71470849e79d401338fdbb21b2a8479ef12e6bf109f6ae3b9e2ed",
+      "18000016": "5024ecf44cce697381e4b90a01d5e5fafdd05900022bf0c3b906a3b8a4cc506d",
+      "18000017": "5df3bbfa08641d90e6c33d2af32f605f1d4fc9f50d338f2f3ebc7667514853e6",
+      "18000018": "bb6e434565ca24711de6e3da854887756864c856755f8118df088142d7c26a74",
+      "18000019": "9435eb99b65c6443c70be326431341e984cb986c5d6bb0e578c61cff48498abf",
+      "18000020": "7ef023804d0b081137aa118c4b5a73319a43840266adb9771fb42080b7b19be4",
+      "18000021": "b209be234b1ed30ec04daa32c40a82af370a9b8e90cf68181e4e459c385326c0",
+      "18000022": "fbd2d3faaa8fc2397aaa70a338ae9f741843db3e923cb20faaed7dd9355efece",
+      "18000023": "4bca8019eeb70c979a373de1b2dfeb4241fdd3189003c9a879aa263dcaa14a41",
+      "18000024": "a7b3ceeeb304432ade64dbba2d0dc8c0657691baf031a093dfa16d77b491f29f",
+      "18000025": "35840a7dc7d7ae052151b4d3236635aefd7edaf6a03518cea580801752f946be",
+      "18000026": "82a31ed514604eeb3959e0551a44f2f65edba08aab687cb35f238ab9ad9c4c7e",
+      "18000027": "b261df856ebbf714ffe2d9e57fbd5dccd126e5978f542b18167df7b43f73e95e",
+      "18000028": "0a624f6ed2a922ef7f168f65dc89db875d19e51bef6f8d3dfa2fc4e9a358fac1",
+      "18000029": "815db691de957fad840ecc8f1d985316be2c77347c838bf0a5ae9cae7b4fad87",
+      "18000030": "b24d6772999d36c3845a173500873fef120e9642ccad3394eca998efa399f90d",
+      "18000031": "66d47f657f6729b3f2beee9e30e9c8bde740fd2d887babc286426303de08a422",
+      "18000032": "46eba04676d90949d0aff92730c0a7c3b03255f52500bb328bc5871d8e04ed90",
+      "18000033": "73666e95f9a6bc04347dc8f8cc5f771fe0a7aa8e9404231e03179e14e66ccdbb",
+      "18000034": "2f872be68d03145dd6b0aebe0152d88ea4a9b9ae6b27ca72cb8f01338da54b09",
+      "18000035": "4139880605a733452183ed55a1aeb2d1a911d50221a305c34fb0865484164c59",
+      "18000036": "f1ce94743d4919a2af1ebbed20c50fdc6c3dcb0fab4c55ecff6eb0b5d0b54b86",
+      "18000037": "21232a6a4d8040b3f9325609416fd31ae98ee12698aecb5b05ba861a0a131fde",
+      "18000038": "707bcd8e0e708b25f3e0ed5ff25cc8f6b46a393852d2d515416cdf5e5783d621",
+      "18000039": "42753b1b1cf124fcc3bdb7e27f3349438836bb68bca718de205f1d6850d1ed60",
+      "18000040": "928f822d9e3dad42640cbaaea75e44cc53d299d5d56d2f55b976bbb2f41151d1",
+      "18000041": "c8d2360fdbc328dbc8e4ec54eb798765e05205c633fc2dc67ff1fc0fbe742488",
+      "18000042": "9d64d60b58189c591a2e2d084656fd33a011ddb66b6844072f61f84e91e9f4be",
+      "18000043": "58f218deabaec16ee8e29e92453eb504d36ca5ecc5e29a7b6d91a2a260f25834",
+      "18000044": "22520358e2a1a012d489fd6318556e942e7a339a53d75438953ccbe0a8e0f558",
+      "18000045": "e0783806ad7bbed1a04026619b406791ea0adafef46c1ac09a8a709ece9ed0f6",
+      "18000046": "5ada9cc153fcee98f62eb09dea4e04bbd90b3d7ba27dd4abaebc7ba980fe7b53",
+      "18000047": "e3a67def9629049a9062e13eaf231bd38cfbc287d3ec1a80741d2314f2590449",
+      "18000048": "789c648803ba8d52c36b76ab77974b9997762b3ac320dc26d0f5992bfea0fdb8",
+      "18000049": "5384d9106b0d75a6beae31887a2f919370aba8ec57213a1050c3667cc5a6d7ae",
+      "18000050": "6bb79745092a6d358ccff7fdeca2223d3559e66820854e005217a3bcfd225781",
+      "18000051": "033fa8f979ccde7583db8c9b9e64ff5ca6e7626d3df7c629f4434937c52ef04a",
+      "18000052": "4057a6c92770b329879aac4e43637dc1963b7a3c1cc9fd8a136a69cf36d4d2d1",
+      "18000053": "94d5a6dfd8389d072e06104630f467d32524e90b0ea785aa32be5f9b5fad93fd",
+      "18000054": "3c6ab2c53854fa00743cee69117d9fe2fd5a1900bfb2ad7b46c1b5f36eedc549",
+      "18000055": "a12e52e9aa6706d842e3d1ebb37a227c2ecac2cd0e09efa4d884bdd85fc62aa7",
+      "18000056": "0888dc2179b5d305731d2a022fb905dcf54dc7d14c7fb2ebec3a01c9bea14198",
+      "18000057": "a8f10df93cce0b44f576368403bc13546223128e08ff4735be7b910f3d027dab",
+      "18000058": "f5a3760fcb226c92c42d7d59eb80827d29ab1ebcc94354afcfa270f979922838",
+      "18000059": "9fdf532cfb3b316c62e31c07fb3830b3ae465601979c519e6a6588d5a86a853a",
+      "18100000": "f5a671463069a1d97ebff818c6900d10b32363a0413f311aa1e2a32c5e5b4196",
+      "18100001": "5aee6c6db5248dfd247e7bc130d9a12d7147f16d1670ca344b3c7677b654ec29",
+      "18100002": "9f0aca411f4edbb7701171c9fd4025d3dd60e131a9eac20b1357ea798c10547f",
+      "18100003": "fe5be81c05a6d63034b28d539224181156c768dab641e18c49c5c1ffe32ab3f7",
+      "18100004": "127c4bbd9364f8e6d722db3585e21ba04c29189b9fdd05afe364872b5937145e",
+      "18100005": "97049e982f345e98cbcb351ee395b396890c706c09e4c468990c1ee8595a4fe8",
+      "18100006": "842b047940a2218c8b3f7d262b6e6e2b5324c3291008ab02fc56ca0c964c6602",
+      "18100007": "bae61365f3cd3a080097532b9c03a71a62219ea958194c46660664b64b435881",
+      "18100008": "1c0247c87475ed8a6bc63f145669c030af2fddb67f530c7726f281a61d4a3655",
+      "18100009": "1e0a262bcefbb2116cf4c33fbe823bf07220f280e096537a733bf9d0a8311f50",
+      "18100010": "520f745aa7e677b12e7ff07aa2ae6219c9975045dae6fca932a74a9e27d104b4",
+      "18100011": "0c6b16572324ae0100b39915eec48d16e99d9e48df3704cd8063e5ec2e73495e",
+      "18100012": "534e95a95d78b07f271cb37418b34e6818808dbf546f24c7acb7a6de3fbc4a80",
+      "18100013": "46798370bc07b070b65c4b4ce25eaafd5c7a7a2a6da647b576e1a00a9f9b5e07",
+      "18100014": "ffc1dbd73c38fc162a74380d3a4732b6fae381c154b5ad86b2e4e08fb2d07395",
+      "18100015": "989fbfb625bc2a73b39eb00264fcf4ac61996c67001623868947e651ae6cfa44",
+      "18100016": "28bfec8785f2a0dbc590c002366a794dd892b82538f67ad2f0cd22ce98a4aca7",
+      "18100017": "9c615c8d8e43fff6df9f62b503340700d9fbcb51595a0e49f0461c57bf2f06ec",
+      "18100018": "fd6becbd2287b90118942e4d52c5f254da95dc720c1c554f10f43ef118dc4394",
+      "18100019": "266f98427dc31305fe9d487338e4b40ff9d54ddc1f26e84fb57ca32a1341fe34",
+      "18100020": "ccc4a4abe32260521a8da18788d52bca01a2575cfab15e02d8264aec2e6a5cca",
+      "18100021": "d826ca4b01bc7807bb1e31b16efb8fcc6a2fa67c089077926e73266736d94c42",
+      "18100022": "a9e73da6ed049b97a54dce543d6720e40dd52be7ef068396c9fdf9c7823c036c",
+      "18100023": "ced0db0c66bbb584898e6edd3142a9399bb2da18ded0b5b6b7232f57a0b88140",
+      "18100024": "c76f182b246e51f975e6a0d6e64182d08435de28532f8b21ce10f3950876886f",
+      "18100025": "c8892768cfe8383c87d7863c58024503bff084a65f36e771433e551a655176a3",
+      "18100026": "91566a971f66fdbb0fce0f193b0bf85c97e5c9795dff23a1c8307b3e5b81fb07",
+      "18100027": "df5fb2a3ee81a32ab262b5d52ce5ad2a4078400990de91d5b269924a93a92b26",
+      "18100028": "37a0ac973987b495f9061ee91a41a8e389e4a48283cc7180c807bb82841369a9",
+      "18100029": "6b6dbdc45af9c70b8e3c808834f107d4ec78d4394ebaeec82d536a17e4937995",
+      "18100030": "c8a902a0a9626507dbc02ccee9124428657aae19d947d8341ce002f17bebdc4c",
+      "18100031": "6276bf4b2e94f31b194f71b7cdb42685110108fe4d6ac62372c41d73b84e20de",
+      "18100032": "3e3eb91b2ae663dc44a5085ba2216c38ce7ce41698a12a8e79d5679634dbbed4",
+      "18100033": "6f97fcb0cc7a51240d3fa1698d1a3cdc8cae67448abd965dc0413477d377679b",
+      "18100034": "90d5d30833b28cc560123aa6c9a5eaeccfc34bb5fc24f2d4ea4541f5a721bfb2",
+      "18100035": "57d7f8fbc8becf3e607744f1919388c0fa620d36b556bb3ebbc40cfb02e66da0",
+      "18100036": "ef4068b2a81c20ac6ff079d4786406983f8b53b7b03d539d04804fe27dd5e3f6",
+      "18100037": "031377a384cdc3376eb7df9f95eb8fefdd8533e4960eeab4b4d5263d8284181a",
+      "18100038": "0205b8ed3b10b797250c200bb50c4ea03189c6996e6462f2cb8c932fb4904fc7",
+      "18100039": "5529975b644aaefe5df3de90548013ce077764f2daba5cee0131adaef7137598",
+      "18100040": "b1ddb5bd49773eb9ff3765c9700a41f322051d824a6afd0a614e3f88830a8cbf",
+      "18100041": "e7bdd6c0cb7aff2e040e6da91bdee19da7d94ba2e72c9120458e4d7304a4499c",
+      "18100042": "16d92f8e339afe457f7c4004e53f527a437113dcd29e8c2746b860a8d37e09e6",
+      "18100043": "2d0a35a7eadf5193650b7172e74ff05e14ba9a1581178b312dea80a40cb45411",
+      "18100044": "2813bf274bcb3554fc3e2c107d0ab5cae495ba7354ee68c56b9daf8c28008ff4",
+      "18100045": "4e5f9b55f61e0005971a909e40286dc31971fe4a449956f03bce79a6b1f934a2",
+      "18100046": "bb1ba2916c37d18b4acfc1ced60be269dfc16cb62d92c83b1b1b2454b2c9b76d",
+      "18100047": "e42604484b3bb55cd9e487f3e17e0153c1e5016e449fe0d741e84c587f526d20",
+      "18100048": "f5b9ab1503f1c35e4d24e26977a5f081cdf0c61b460283eaff867ad6894e52d5",
+      "18100049": "4af5da221da343375f9d2b4cf510265052e309c8ea7f1d2bcbe134db61210042",
+      "18100050": "4c6bce13ecf15432725da12df422788ce854d99090b9d625b4b604c5243086e2",
+      "18100051": "38ba2b4a09fa26d8d1f3ed4f2e090a3c7f5a0c3dc34ae131ce13132e530dfc28",
+      "18100052": "90e4391ff0426b56c0c46d7cc12b95bf7a125aa797f50725fe2375905a9eb14d",
+      "18100053": "b8ea4957b31cc6b81e235ca4a7c3c173bcf7287ea783ad35c6187a1785eb4e24",
+      "18100054": "03434ca9a4c33357d8432c4c1559defe831392a3883dd4dd9ddb08637a27fc42",
+      "18100055": "f31fac6b778bc59245520af46aa4b644fc08215b35dab0e689e28072424e69e9",
+      "18100056": "5e699fa0af007502136a653e50868681c9d6e6f5a09c1b1d0f05098b24514892",
+      "18100057": "2b7658e79f87d34c8997a5a265553e98dd1aa387fbaf4c72a65bc8c6d2bf9f95",
+      "18100058": "d2ae311fe4a9e739946fb9976292336ffd1b7f7162913a281f04b76e9b21bf91",
+      "18100059": "166ebb23cdbac2ca8d0e8f7ec10719dcb0bb9cda5fa00aa2ad7b25db156af279",
+      "18200000": "54783b74e73de558e96953524e2c30b37f54ba6070d23814dc950c774b426d1e",
+      "18200001": "56ecc84e5d31c558412f6d1b8cb02da2b25c6dd15a99fd68afd216f40c5cb71f",
+      "18200002": "9ed22710aa9f54199aaab8e5f493a92693ecba366a799aa3bda8c4e3e280cb6a",
+      "18200003": "59c77ee619d2e108279089c1f018ec1969cf939a27c46fc9c5d07c6544faf486",
+      "18200004": "57602a3ce53c197e10ec53e3717595097f8aadf4f55781f430e7073e922da2c4",
+      "18200005": "7e58180afb961fc08d8e2a9d19112fe67348412a65b7b3ead6d5b5234ea212fd",
+      "18200006": "bdca6680cb0002814990913c7df5020d6ea1c3ce85fabcca966db6668b4d9e24",
+      "18200007": "70a910e49455467f722d2429c25698c45ebdeae6594f8d591bb6cf923e83224f",
+      "18200008": "9d0817dc66c3a5efdb94e3a6e8a8fd0b9982189cccabc7a3a7ad93212a8350ae",
+      "18200009": "75284157e04d39e8c642f44ad683f060283f25a2bb4d67d0008af900ec894635",
+      "18200010": "c532663995b947b5d0184173c84358101b1977af9ca0439511a3a93c02afe003",
+      "18200011": "5ffd5373efa18e10577b5040f1da88e880576a65d61ec765d92733b5c7587783",
+      "18200012": "4af444182dc8b6766c9a3371a2f7411ea9a0cf1a0c7f01b3358cb9d251b02e34",
+      "18200013": "83cdb436fb9e8ab5809ef4dcc1c5f4a10204afbe782800954d3ddcfa6646825e",
+      "18200014": "bbe82255b4559fd361d4625ebc134ba2f412195a006382f1a52f13ed0a05e850",
+      "18200015": "4494749deae13028a2629f07a04733a4002397d00463bd30e55853ee8ad7503b",
+      "18200016": "e4e0d1070662f1977ef68c0bc380ab49b419af59a430551287215f9839a52b82",
+      "18200017": "c27d6e7ff22a3ccdde12cd71d09157b8465c596694b602fb70618e0ae00d1b4f",
+      "18200018": "3436403e41c7832c1fea808ef79b1596e50fe3f3c84d412547b7ad6683525c1e",
+      "18200019": "8232050e45c76ab7687df5914cd1282dec06aaa941a723afca042e578d23590c",
+      "18200020": "464c9a5fab62aaa7813f3e15b0b68c93cca4e8f73c551cdbff876087bfbd9084",
+      "18200021": "5b88edcb306ea28374bbe5872a8124d36f7f1e7df9c59d4b4f26e40af009b016",
+      "18200022": "33bce9cec4dea8646d5500bef3f8d3b5492aea89d2ad64d38ee20613112d12ab",
+      "18200023": "a84007cb3c0e9d65d5b4fdfe4262407fd0e076c30f4df26f5b36f57bce58defd",
+      "18200024": "2409e999c088df18ddbcfd4a310a34f207eb469caf78e2ee239c9639c51a4b85",
+      "18200025": "bd3a319e196dbdba36c3e0ba28e0c1d8277cd952835baa815211109f0f340a35",
+      "18200026": "e6f567f4826258140d26cc90f2912de0570b7a29fac5e3d907645f3013149737",
+      "18200027": "7d824a7d9e2e81ce983d6f545ecf3b09fb977b2fe4afaa8c63c77e170f033551",
+      "18200028": "2465fccb235dacd84de3340c34da24ecce14a45f7db0d2b23e7445b628bfaa77",
+      "18200029": "fb8ec76dd7677a618c7d488651d23a92033bf81474d42ea023ef91fc5b64ee40",
+      "18200030": "499b6057abdb313811d3a92314fec8faed8f02aedbbdab31f38c17026210babb",
+      "18200031": "c420347d8105496472ebf17d1a8b7d32d97e109de4ebe4b1521b8442f95cccdc",
+      "18200032": "637b14cbc5153c0d9ee43191357c1f9481e965df6a2d17b578e2f4ef10d89a93",
+      "18200033": "01af286d901345dc134503ff7b3ef9a80fd504357b8624c4b9e0b397b91be447",
+      "18200034": "64c782c1a58c1c7160c6cd8c6535313526754f53b87e1d6482ccb64aa99a6ea3",
+      "18200035": "789b3a007e3cab63726028b06dd89488c9d5ddf13eeb47ef9c27914b8f691d56",
+      "18200036": "bbf17381531d266e978c34f3d76d3dd2216678df71c76f410b38fbf47bd04ebb",
+      "18200037": "27a63b84b61d9da3ffacd3fce53ecaa8b667fdfcdf52ea5976b65ff31a11a343",
+      "18200038": "69618b84f36d7cc778e279e50182063a4df595c531c4cfa8fe1508fb36f36936",
+      "18200039": "3839d9739928c9ebdd11695293c704d59e0b988681c6668a7cefe8f7fc085bd5",
+      "18200040": "9b6c52b4c8174fd9d1f834788dee605fb8473621220545a57ddfcadcc0c75362",
+      "18200041": "e9701aecc85746e1e33029de088e36985b10eafa21e1f0aaaa48ea1c3f0a7f77",
+      "18200042": "0b28779ed98b13e01ba21b51bb9d924c830e8183401026580a8e503b1078efa6",
+      "18200043": "c63c4fe487f0d577f3e8779bbd12e6b2c168d0a3f006df64638fbf7a4711145b",
+      "18200044": "045647bc143bf2239d9e71786377439ea7739e9b9688d5c6b5224842588ec2ec",
+      "18200045": "b18dfe868686ca0211015152735e0865b94642f337459b7a50a707bf458ea2ac",
+      "18200046": "39239454e04ba39d10f4bdbbf6bb7bf73e0a303e11ec6c1717ef24b354ec4341",
+      "18200047": "9e72eab013f1dbedd752bf5bac1505d24747f92c4d64263359a4e4dc459dffb5",
+      "18200048": "7ea3587ab9f1e1ce2a2560b1b481b98a2c8355af5b465f5d6fbe87f24bc72bc3",
+      "18200049": "ebfdf0bb2de752ec3c0fd2f20537935be4ebce7fd409977a09464b9b09bb8b2b",
+      "18200050": "87e05d0bd51675c10a2511ab87d723a467d7b81f4b32827c1849b2ea9ffd9066",
+      "18200051": "5078ce3ab6e20b9a6c1738d4eb2aa0253342c371bb0ccd0af2c1a714271db4c6",
+      "18200052": "d479e5d791324749813d5c1d88c2c4c2720478edb986896c44927e2997233d37",
+      "18200053": "d5a96aa6bc530b2c4a7464597585df9be8a4a37d75395560a11f878262392391",
+      "18200054": "128135ca068b0736df1dd52c2c8e5f7451ff41e982a5fbe6f4191ff8b6e9f2e9",
+      "18200055": "88f2924005ac43212c2c4a0709bcabfad879726ac2c36d5b268d5129c0f67c7c",
+      "18200056": "478e14e93d8021a50b51d6dc4291526c56a99ea62c49c2a045ba16aa9c935015",
+      "18200057": "3d5a30c4891f292f9cb0e1c2c39e34c4f7718f1fbb24bf7b59241a82fd63fded",
+      "18200058": "2bcc6950913dc1507d32845c9927c67386b9776e0288cefaf531403b92f0838d",
+      "18200059": "55fb358b4855602a2e1a152d3bb52ede9fea81166cf34934456e431003785813"
+    },
+    "primary_metric": "total episode mineral collections; paired episode bootstrap per policy split",
+    "support_criterion": "positive mineral-gain interval in each split without increased mean energy loss or depletion",
+    "tail_policy": "last horizon-1 steps use current selector for every experimental controller",
+    "frozen": "Q, forecast models, readouts, online self-model; no training or test-driven selection",
+    "matching": "identical initial environment and policy RNG seeds; subsequent trajectories and random draws can diverge",
+    "limits": [
+      "Models/readouts were trained for original-policy continuation; repeated intervention changes that distribution.",
+      "No energy-loss variation means no evidence of safety improvement.",
+      "State MAE is diagnostic and compares different visited states across controllers.",
+      "Bootstrap intervals resample whole paired episodes; exploratory comparisons are unadjusted."
+    ]
+  },
+  "splits": [
+    {
+      "split": 1,
+      "means": {
+        "current_selector": {
+          "minerals": 1.9833333333333334,
+          "energy_loss": 0.0,
+          "lava_steps": 0.0,
+          "depleted": 0.0,
+          "zero_collection": 0.26666666666666666,
+          "reward": 178.33333333333334,
+          "utility": 198.33333333333334,
+          "steps": 40.0,
+          "changed_choices": 0.0,
+          "nn_state_mae": 0.0028024174004827795
+        },
+        "direct_features": {
+          "minerals": 4.05,
+          "energy_loss": 0.0,
+          "lava_steps": 0.0,
+          "depleted": 0.0,
+          "zero_collection": 0.016666666666666666,
+          "reward": 385.0,
+          "utility": 405.0,
+          "steps": 40.0,
+          "changed_choices": 9.633333333333333,
+          "nn_state_mae": 0.0044592457827995835
+        },
+        "neural_state": {
+          "minerals": 4.266666666666667,
+          "energy_loss": 0.0,
+          "lava_steps": 0.0,
+          "depleted": 0.0,
+          "zero_collection": 0.0,
+          "reward": 406.6666666666667,
+          "utility": 426.6666666666667,
+          "steps": 40.0,
+          "changed_choices": 7.483333333333333,
+          "nn_state_mae": 0.00438732571349862
+        }
+      },
+      "comparisons": {
+        "direct_features_vs_current_selector": {
+          "minerals": {
+            "mean_difference": 2.066666666666667,
+            "bootstrap_95_percent_interval": [
+              1.5166666666666666,
+              2.6166666666666667
+            ]
+          },
+          "energy_loss": {
+            "mean_difference": 0.0,
+            "bootstrap_95_percent_interval": [
+              0.0,
+              0.0
+            ]
+          },
+          "depleted": {
+            "mean_difference": 0.0,
+            "bootstrap_95_percent_interval": [
+              0.0,
+              0.0
+            ]
+          },
+          "zero_collection": {
+            "mean_difference": -0.25,
+            "bootstrap_95_percent_interval": [
+              -0.38333333333333336,
+              -0.13333333333333333
+            ]
+          },
+          "utility": {
+            "mean_difference": 206.66666666666666,
+            "bootstrap_95_percent_interval": [
+              151.66666666666666,
+              261.6666666666667
+            ]
+          }
+        },
+        "neural_state_vs_current_selector": {
+          "minerals": {
+            "mean_difference": 2.283333333333333,
+            "bootstrap_95_percent_interval": [
+              1.6995833333333332,
+              2.8666666666666667
+            ]
+          },
+          "energy_loss": {
+            "mean_difference": 0.0,
+            "bootstrap_95_percent_interval": [
+              0.0,
+              0.0
+            ]
+          },
+          "depleted": {
+            "mean_difference": 0.0,
+            "bootstrap_95_percent_interval": [
+              0.0,
+              0.0
+            ]
+          },
+          "zero_collection": {
+            "mean_difference": -0.26666666666666666,
+            "bootstrap_95_percent_interval": [
+              -0.38333333333333336,
+              -0.15
+            ]
+          },
+          "utility": {
+            "mean_difference": 228.33333333333334,
+            "bootstrap_95_percent_interval": [
+              169.95833333333334,
+              286.6666666666667
+            ]
+          }
+        },
+        "neural_state_vs_direct_features": {
+          "minerals": {
+            "mean_difference": 0.21666666666666667,
+            "bootstrap_95_percent_interval": [
+              -0.1,
+              0.55
+            ]
+          },
+          "energy_loss": {
+            "mean_difference": 0.0,
+            "bootstrap_95_percent_interval": [
+              0.0,
+              0.0
+            ]
+          },
+          "depleted": {
+            "mean_difference": 0.0,
+            "bootstrap_95_percent_interval": [
+              0.0,
+              0.0
+            ]
+          },
+          "zero_collection": {
+            "mean_difference": -0.016666666666666666,
+            "bootstrap_95_percent_interval": [
+              -0.05,
+              0.0
+            ]
+          },
+          "utility": {
+            "mean_difference": 21.666666666666668,
+            "bootstrap_95_percent_interval": [
+              -10.0,
+              55.0
+            ]
+          }
+        }
+      },
+      "support_vs_current_selector": {
+        "direct_features": true,
+        "neural_state": true
+      }
+    },
+    {
+      "split": 2,
+      "means": {
+        "current_selector": {
+          "minerals": 2.45,
+          "energy_loss": 0.0,
+          "lava_steps": 0.0,
+          "depleted": 0.0,
+          "zero_collection": 0.15,
+          "reward": 225.0,
+          "utility": 245.0,
+          "steps": 40.0,
+          "changed_choices": 0.0,
+          "nn_state_mae": 0.0029906571234850562
+        },
+        "direct_features": {
+          "minerals": 1.7333333333333334,
+          "energy_loss": 0.0,
+          "lava_steps": 0.0,
+          "depleted": 0.0,
+          "zero_collection": 0.15,
+          "reward": 153.33333333333334,
+          "utility": 173.33333333333334,
+          "steps": 40.0,
+          "changed_choices": 21.4,
+          "nn_state_mae": 0.005301675446624726
+        },
+        "neural_state": {
+          "minerals": 4.583333333333333,
+          "energy_loss": 0.0,
+          "lava_steps": 0.0,
+          "depleted": 0.0,
+          "zero_collection": 0.05,
+          "reward": 438.3333333333333,
+          "utility": 458.3333333333333,
+          "steps": 40.0,
+          "changed_choices": 9.45,
+          "nn_state_mae": 0.004301096722741222
+        }
+      },
+      "comparisons": {
+        "direct_features_vs_current_selector": {
+          "minerals": {
+            "mean_difference": -0.7166666666666667,
+            "bootstrap_95_percent_interval": [
+              -1.2170833333333333,
+              -0.18333333333333332
+            ]
+          },
+          "energy_loss": {
+            "mean_difference": 0.0,
+            "bootstrap_95_percent_interval": [
+              0.0,
+              0.0
+            ]
+          },
+          "depleted": {
+            "mean_difference": 0.0,
+            "bootstrap_95_percent_interval": [
+              0.0,
+              0.0
+            ]
+          },
+          "zero_collection": {
+            "mean_difference": 0.0,
+            "bootstrap_95_percent_interval": [
+              -0.13333333333333333,
+              0.13333333333333333
+            ]
+          },
+          "utility": {
+            "mean_difference": -71.66666666666667,
+            "bootstrap_95_percent_interval": [
+              -121.70833333333333,
+              -18.333333333333332
+            ]
+          }
+        },
+        "neural_state_vs_current_selector": {
+          "minerals": {
+            "mean_difference": 2.1333333333333333,
+            "bootstrap_95_percent_interval": [
+              1.6333333333333333,
+              2.6666666666666665
+            ]
+          },
+          "energy_loss": {
+            "mean_difference": 0.0,
+            "bootstrap_95_percent_interval": [
+              0.0,
+              0.0
+            ]
+          },
+          "depleted": {
+            "mean_difference": 0.0,
+            "bootstrap_95_percent_interval": [
+              0.0,
+              0.0
+            ]
+          },
+          "zero_collection": {
+            "mean_difference": -0.1,
+            "bootstrap_95_percent_interval": [
+              -0.2,
+              0.0
+            ]
+          },
+          "utility": {
+            "mean_difference": 213.33333333333334,
+            "bootstrap_95_percent_interval": [
+              163.33333333333334,
+              266.6666666666667
+            ]
+          }
+        },
+        "neural_state_vs_direct_features": {
+          "minerals": {
+            "mean_difference": 2.85,
+            "bootstrap_95_percent_interval": [
+              2.3666666666666667,
+              3.316666666666667
+            ]
+          },
+          "energy_loss": {
+            "mean_difference": 0.0,
+            "bootstrap_95_percent_interval": [
+              0.0,
+              0.0
+            ]
+          },
+          "depleted": {
+            "mean_difference": 0.0,
+            "bootstrap_95_percent_interval": [
+              0.0,
+              0.0
+            ]
+          },
+          "zero_collection": {
+            "mean_difference": -0.1,
+            "bootstrap_95_percent_interval": [
+              -0.2,
+              0.0
+            ]
+          },
+          "utility": {
+            "mean_difference": 285.0,
+            "bootstrap_95_percent_interval": [
+              236.66666666666666,
+              331.6666666666667
+            ]
+          }
+        }
+      },
+      "support_vs_current_selector": {
+        "direct_features": false,
+        "neural_state": true
+      }
+    },
+    {
+      "split": 3,
+      "means": {
+        "current_selector": {
+          "minerals": 1.95,
+          "energy_loss": 0.0,
+          "lava_steps": 0.0,
+          "depleted": 0.0,
+          "zero_collection": 0.16666666666666666,
+          "reward": 175.0,
+          "utility": 195.0,
+          "steps": 40.0,
+          "changed_choices": 0.0,
+          "nn_state_mae": 0.0030096679611692997
+        },
+        "direct_features": {
+          "minerals": 2.8666666666666667,
+          "energy_loss": 0.0,
+          "lava_steps": 0.0,
+          "depleted": 0.0,
+          "zero_collection": 0.13333333333333333,
+          "reward": 266.6666666666667,
+          "utility": 286.6666666666667,
+          "steps": 40.0,
+          "changed_choices": 18.066666666666666,
+          "nn_state_mae": 0.00501644047058143
+        },
+        "neural_state": {
+          "minerals": 4.083333333333333,
+          "energy_loss": 0.0,
+          "lava_steps": 0.0,
+          "depleted": 0.0,
+          "zero_collection": 0.03333333333333333,
+          "reward": 388.3333333333333,
+          "utility": 408.3333333333333,
+          "steps": 40.0,
+          "changed_choices": 11.566666666666666,
+          "nn_state_mae": 0.004652044340793595
+        }
+      },
+      "comparisons": {
+        "direct_features_vs_current_selector": {
+          "minerals": {
+            "mean_difference": 0.9166666666666666,
+            "bootstrap_95_percent_interval": [
+              0.4329166666666667,
+              1.4166666666666667
+            ]
+          },
+          "energy_loss": {
+            "mean_difference": 0.0,
+            "bootstrap_95_percent_interval": [
+              0.0,
+              0.0
+            ]
+          },
+          "depleted": {
+            "mean_difference": 0.0,
+            "bootstrap_95_percent_interval": [
+              0.0,
+              0.0
+            ]
+          },
+          "zero_collection": {
+            "mean_difference": -0.03333333333333333,
+            "bootstrap_95_percent_interval": [
+              -0.13333333333333333,
+              0.06666666666666667
+            ]
+          },
+          "utility": {
+            "mean_difference": 91.66666666666667,
+            "bootstrap_95_percent_interval": [
+              43.29166666666667,
+              141.66666666666666
+            ]
+          }
+        },
+        "neural_state_vs_current_selector": {
+          "minerals": {
+            "mean_difference": 2.1333333333333333,
+            "bootstrap_95_percent_interval": [
+              1.6666666666666667,
+              2.6
+            ]
+          },
+          "energy_loss": {
+            "mean_difference": 0.0,
+            "bootstrap_95_percent_interval": [
+              0.0,
+              0.0
+            ]
+          },
+          "depleted": {
+            "mean_difference": 0.0,
+            "bootstrap_95_percent_interval": [
+              0.0,
+              0.0
+            ]
+          },
+          "zero_collection": {
+            "mean_difference": -0.13333333333333333,
+            "bootstrap_95_percent_interval": [
+              -0.23333333333333334,
+              -0.05
+            ]
+          },
+          "utility": {
+            "mean_difference": 213.33333333333334,
+            "bootstrap_95_percent_interval": [
+              166.66666666666666,
+              260.0
+            ]
+          }
+        },
+        "neural_state_vs_direct_features": {
+          "minerals": {
+            "mean_difference": 1.2166666666666666,
+            "bootstrap_95_percent_interval": [
+              0.6666666666666666,
+              1.7333333333333334
+            ]
+          },
+          "energy_loss": {
+            "mean_difference": 0.0,
+            "bootstrap_95_percent_interval": [
+              0.0,
+              0.0
+            ]
+          },
+          "depleted": {
+            "mean_difference": 0.0,
+            "bootstrap_95_percent_interval": [
+              0.0,
+              0.0
+            ]
+          },
+          "zero_collection": {
+            "mean_difference": -0.1,
+            "bootstrap_95_percent_interval": [
+              -0.2,
+              -0.016666666666666666
+            ]
+          },
+          "utility": {
+            "mean_difference": 121.66666666666667,
+            "bootstrap_95_percent_interval": [
+              66.66666666666667,
+              173.33333333333334
+            ]
+          }
+        }
+      },
+      "support_vs_current_selector": {
+        "direct_features": true,
+        "neural_state": true
+      }
+    }
+  ],
+  "aggregate_means": {
+    "current_selector": {
+      "minerals": 2.1277777777777778,
+      "energy_loss": 0.0,
+      "lava_steps": 0.0,
+      "depleted": 0.0,
+      "zero_collection": 0.19444444444444445,
+      "reward": 192.77777777777777,
+      "utility": 212.77777777777777,
+      "steps": 40.0,
+      "changed_choices": 0.0,
+      "nn_state_mae": 0.002934247495045712
+    },
+    "direct_features": {
+      "minerals": 2.8833333333333333,
+      "energy_loss": 0.0,
+      "lava_steps": 0.0,
+      "depleted": 0.0,
+      "zero_collection": 0.1,
+      "reward": 268.3333333333333,
+      "utility": 288.3333333333333,
+      "steps": 40.0,
+      "changed_choices": 16.366666666666667,
+      "nn_state_mae": 0.004925787233335247
+    },
+    "neural_state": {
+      "minerals": 4.311111111111111,
+      "energy_loss": 0.0,
+      "lava_steps": 0.0,
+      "depleted": 0.0,
+      "zero_collection": 0.027777777777777776,
+      "reward": 411.1111111111111,
+      "utility": 431.1111111111111,
+      "steps": 40.0,
+      "changed_choices": 9.5,
+      "nn_state_mae": 0.0044468222590111454
+    }
+  },
+  "matched_environments": 180,
+  "controller_episodes": 540,
+  "source_artifacts_unchanged": true,
+  "support_in_every_split": {
+    "direct_features": false,
+    "neural_state": true
+  }
+}

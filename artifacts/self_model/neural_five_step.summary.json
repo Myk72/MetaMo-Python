@@ -1,0 +1,1857 @@
+{
+  "settings": {
+    "splits": 3,
+    "pretrain_episodes": 30,
+    "train_episodes": 80,
+    "validation_episodes": 20,
+    "test_episodes": 24,
+    "max_steps": 40,
+    "horizon": 5,
+    "hidden_units": 32,
+    "max_epochs": 300,
+    "patience": 30,
+    "initializations": 3,
+    "batch_size": 128,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "ridge_penalties": [
+      0.01,
+      0.1,
+      1.0,
+      10.0,
+      100.0
+    ],
+    "seed_start": 7000000,
+    "seed_stride": 100000,
+    "agent_seed": 100,
+    "network_seed": 1000
+  },
+  "feature_names": [
+    "current.goal.individuation",
+    "current.goal.transcendence",
+    "current.goal.mineral_acquisition",
+    "current.goal.energy_preservation",
+    "current.goal.navigation_efficiency",
+    "current.goal.lava_exposure",
+    "current.goal.boundary_collision",
+    "current.modulator.valence",
+    "current.modulator.arousal",
+    "current.modulator.approach",
+    "current.modulator.resolution",
+    "current.modulator.threshold",
+    "current.modulator.securing",
+    "nominal.goal.individuation",
+    "nominal.goal.transcendence",
+    "nominal.goal.mineral_acquisition",
+    "nominal.goal.energy_preservation",
+    "nominal.goal.navigation_efficiency",
+    "nominal.goal.lava_exposure",
+    "nominal.goal.boundary_collision",
+    "nominal.modulator.valence",
+    "nominal.modulator.arousal",
+    "nominal.modulator.approach",
+    "nominal.modulator.resolution",
+    "nominal.modulator.threshold",
+    "nominal.modulator.securing",
+    "stimulus.goal_proximity",
+    "stimulus.hazard_pressure",
+    "stimulus.energy_deficit",
+    "stimulus.time_pressure",
+    "stimulus.safe_progress",
+    "stimulus.safe_mobility",
+    "action.UP",
+    "action.DOWN",
+    "action.LEFT",
+    "action.RIGHT",
+    "move.hazard_risk",
+    "move.mineral_progress",
+    "move.mineral_collected",
+    "move.safe_mobility_after",
+    "policy.task_score",
+    "policy.safety_score",
+    "policy.composed_score",
+    "policy.tanh_q_over_100"
+  ],
+  "coordinate_names": [
+    "goal.individuation",
+    "goal.transcendence",
+    "goal.mineral_acquisition",
+    "goal.energy_preservation",
+    "goal.navigation_efficiency",
+    "goal.lava_exposure",
+    "goal.boundary_collision",
+    "modulator.valence",
+    "modulator.arousal",
+    "modulator.approach",
+    "modulator.resolution",
+    "modulator.threshold",
+    "modulator.securing"
+  ],
+  "versions": {
+    "python": "3.11.9",
+    "numpy": "2.1.3",
+    "torch": "2.13.0+cpu"
+  },
+  "protocol": {
+    "environment": "standard GridWorld",
+    "target": "committed x[t+5]",
+    "learned_residual": "x[t+5] - nominal x[t+1]",
+    "delta_prediction": "predicted future state minus current state; identical absolute error",
+    "input_capture": "after selecting the proposed action, before env.step",
+    "neural_architecture": "44 inputs -> 32 tanh -> 13 linear outputs",
+    "fit_loss": "MSE of training-standardized residuals",
+    "selection_metric": "equal-weight mean of goal MAE and modulator MAE",
+    "normalization": "training episodes only",
+    "output_bounds": [
+      0,
+      1
+    ],
+    "data_split": "disjoint entire episodes; no cross-episode labels",
+    "continuation": "frozen Q, epsilon zero, existing randomized tie resolution",
+    "limits": "on-policy forecasts only; overlapping windows; bootstrap resamples whole test episodes",
+    "deployment": "diagnostic experiment; no neural action selection",
+    "point_estimate_gate": "neural goal and modulator MAE each beat every baseline in every split"
+  },
+  "splits": [
+    {
+      "agent_seed": 100,
+      "pretrain_seed_start": 7000000,
+      "train_seed_start": 7000030,
+      "validation_seed_start": 7000110,
+      "test_seed_start": 7000130,
+      "samples": {
+        "train": 2880,
+        "validation": 720,
+        "test": 864
+      },
+      "selected_rule": "nominal_trend",
+      "ridge_selection": {
+        "penalty": 0.01,
+        "validation_balanced_mae": 0.003404692559731283
+      },
+      "neural_selection": {
+        "seed": 1000,
+        "best_epoch": 159,
+        "epochs_run": 189,
+        "validation_balanced_mae": 0.003120263165123179,
+        "parameter_count": 1869,
+        "validation_history": [
+          {
+            "epoch": 0,
+            "validation_balanced_mae": 0.008912977689445916
+          },
+          {
+            "epoch": 10,
+            "validation_balanced_mae": 0.004043401059620409
+          },
+          {
+            "epoch": 20,
+            "validation_balanced_mae": 0.003544587943223382
+          },
+          {
+            "epoch": 30,
+            "validation_balanced_mae": 0.0033414594746585266
+          },
+          {
+            "epoch": 40,
+            "validation_balanced_mae": 0.003278415827260395
+          },
+          {
+            "epoch": 50,
+            "validation_balanced_mae": 0.0032477955934561353
+          },
+          {
+            "epoch": 60,
+            "validation_balanced_mae": 0.0032149341556614286
+          },
+          {
+            "epoch": 70,
+            "validation_balanced_mae": 0.0032188477612175993
+          },
+          {
+            "epoch": 80,
+            "validation_balanced_mae": 0.0031895570166000356
+          },
+          {
+            "epoch": 90,
+            "validation_balanced_mae": 0.0031732941607420613
+          },
+          {
+            "epoch": 100,
+            "validation_balanced_mae": 0.0031775491453045457
+          },
+          {
+            "epoch": 110,
+            "validation_balanced_mae": 0.0031618564597522864
+          },
+          {
+            "epoch": 120,
+            "validation_balanced_mae": 0.0031629794456998544
+          },
+          {
+            "epoch": 130,
+            "validation_balanced_mae": 0.003129170522820938
+          },
+          {
+            "epoch": 140,
+            "validation_balanced_mae": 0.00314855315003233
+          },
+          {
+            "epoch": 150,
+            "validation_balanced_mae": 0.00313645459489626
+          },
+          {
+            "epoch": 160,
+            "validation_balanced_mae": 0.003145087580810375
+          },
+          {
+            "epoch": 170,
+            "validation_balanced_mae": 0.0031391217127841155
+          },
+          {
+            "epoch": 180,
+            "validation_balanced_mae": 0.003136196342743801
+          }
+        ]
+      },
+      "neural_initializations": [
+        {
+          "seed": 1000,
+          "best_epoch": 159,
+          "epochs_run": 189,
+          "validation_balanced_mae": 0.003120263165123179,
+          "parameter_count": 1869,
+          "validation_history": [
+            {
+              "epoch": 0,
+              "validation_balanced_mae": 0.008912977689445916
+            },
+            {
+              "epoch": 10,
+              "validation_balanced_mae": 0.004043401059620409
+            },
+            {
+              "epoch": 20,
+              "validation_balanced_mae": 0.003544587943223382
+            },
+            {
+              "epoch": 30,
+              "validation_balanced_mae": 0.0033414594746585266
+            },
+            {
+              "epoch": 40,
+              "validation_balanced_mae": 0.003278415827260395
+            },
+            {
+              "epoch": 50,
+              "validation_balanced_mae": 0.0032477955934561353
+            },
+            {
+              "epoch": 60,
+              "validation_balanced_mae": 0.0032149341556614286
+            },
+            {
+              "epoch": 70,
+              "validation_balanced_mae": 0.0032188477612175993
+            },
+            {
+              "epoch": 80,
+              "validation_balanced_mae": 0.0031895570166000356
+            },
+            {
+              "epoch": 90,
+              "validation_balanced_mae": 0.0031732941607420613
+            },
+            {
+              "epoch": 100,
+              "validation_balanced_mae": 0.0031775491453045457
+            },
+            {
+              "epoch": 110,
+              "validation_balanced_mae": 0.0031618564597522864
+            },
+            {
+              "epoch": 120,
+              "validation_balanced_mae": 0.0031629794456998544
+            },
+            {
+              "epoch": 130,
+              "validation_balanced_mae": 0.003129170522820938
+            },
+            {
+              "epoch": 140,
+              "validation_balanced_mae": 0.00314855315003233
+            },
+            {
+              "epoch": 150,
+              "validation_balanced_mae": 0.00313645459489626
+            },
+            {
+              "epoch": 160,
+              "validation_balanced_mae": 0.003145087580810375
+            },
+            {
+              "epoch": 170,
+              "validation_balanced_mae": 0.0031391217127841155
+            },
+            {
+              "epoch": 180,
+              "validation_balanced_mae": 0.003136196342743801
+            }
+          ],
+          "test_balanced_mae": 0.0026541554211902173
+        },
+        {
+          "seed": 1001,
+          "best_epoch": 104,
+          "epochs_run": 134,
+          "validation_balanced_mae": 0.003166349088446331,
+          "parameter_count": 1869,
+          "validation_history": [
+            {
+              "epoch": 0,
+              "validation_balanced_mae": 0.008912977689445916
+            },
+            {
+              "epoch": 10,
+              "validation_balanced_mae": 0.003920088347971504
+            },
+            {
+              "epoch": 20,
+              "validation_balanced_mae": 0.003493534343396087
+            },
+            {
+              "epoch": 30,
+              "validation_balanced_mae": 0.003381685384212003
+            },
+            {
+              "epoch": 40,
+              "validation_balanced_mae": 0.0032781677514406526
+            },
+            {
+              "epoch": 50,
+              "validation_balanced_mae": 0.003238206029985959
+            },
+            {
+              "epoch": 60,
+              "validation_balanced_mae": 0.003194612135902305
+            },
+            {
+              "epoch": 70,
+              "validation_balanced_mae": 0.003186546357081897
+            },
+            {
+              "epoch": 80,
+              "validation_balanced_mae": 0.0031945645403013614
+            },
+            {
+              "epoch": 90,
+              "validation_balanced_mae": 0.003185682505705878
+            },
+            {
+              "epoch": 100,
+              "validation_balanced_mae": 0.0031736852753758834
+            },
+            {
+              "epoch": 110,
+              "validation_balanced_mae": 0.0031819230012157147
+            },
+            {
+              "epoch": 120,
+              "validation_balanced_mae": 0.003177599787291655
+            },
+            {
+              "epoch": 130,
+              "validation_balanced_mae": 0.0031683462421586285
+            }
+          ],
+          "test_balanced_mae": 0.0025745753759274575
+        },
+        {
+          "seed": 1002,
+          "best_epoch": 94,
+          "epochs_run": 124,
+          "validation_balanced_mae": 0.003219088555039353,
+          "parameter_count": 1869,
+          "validation_history": [
+            {
+              "epoch": 0,
+              "validation_balanced_mae": 0.008912977689445916
+            },
+            {
+              "epoch": 10,
+              "validation_balanced_mae": 0.0038614065447066764
+            },
+            {
+              "epoch": 20,
+              "validation_balanced_mae": 0.003479869572764306
+            },
+            {
+              "epoch": 30,
+              "validation_balanced_mae": 0.003366109492474307
+            },
+            {
+              "epoch": 40,
+              "validation_balanced_mae": 0.0033037611300351898
+            },
+            {
+              "epoch": 50,
+              "validation_balanced_mae": 0.0032731784357004443
+            },
+            {
+              "epoch": 60,
+              "validation_balanced_mae": 0.0032609579525165622
+            },
+            {
+              "epoch": 70,
+              "validation_balanced_mae": 0.003238253585321336
+            },
+            {
+              "epoch": 80,
+              "validation_balanced_mae": 0.0032509681848811043
+            },
+            {
+              "epoch": 90,
+              "validation_balanced_mae": 0.003236530348690723
+            },
+            {
+              "epoch": 100,
+              "validation_balanced_mae": 0.0032265493083138367
+            },
+            {
+              "epoch": 110,
+              "validation_balanced_mae": 0.0032391682923039247
+            },
+            {
+              "epoch": 120,
+              "validation_balanced_mae": 0.0032455316382681925
+            }
+          ],
+          "test_balanced_mae": 0.00264257842682127
+        }
+      ],
+      "test_metrics": {
+        "persistence": {
+          "balanced_mae": 0.021914857068880623,
+          "goal_mae": 0.012377650746288577,
+          "modulator_mae": 0.03145206339147267,
+          "coordinate_mae": {
+            "goal.individuation": 0.004190775836183537,
+            "goal.transcendence": 0.02515463183079491,
+            "goal.mineral_acquisition": 0.025958771057513205,
+            "goal.energy_preservation": 0.003243161062507594,
+            "goal.navigation_efficiency": 0.023690244235998678,
+            "goal.lava_exposure": 0.004215756421380786,
+            "goal.boundary_collision": 0.00019021477964126257,
+            "modulator.valence": 0.03561510293907325,
+            "modulator.arousal": 0.013573110464772845,
+            "modulator.approach": 0.03430193344103609,
+            "modulator.resolution": 0.038147518655399684,
+            "modulator.threshold": 0.03322066359541017,
+            "modulator.securing": 0.033854051253143974
+          },
+          "episode_balanced_mae": {
+            "7000130": 0.02333884866950469,
+            "7000131": 0.028557254809942277,
+            "7000132": 0.02768044553057537,
+            "7000133": 0.021548463108668085,
+            "7000134": 0.026072016146889535,
+            "7000135": 0.01747939867621198,
+            "7000136": 0.018236499445064662,
+            "7000137": 0.018201608590989682,
+            "7000138": 0.022230928329826153,
+            "7000139": 0.01840532048011706,
+            "7000140": 0.014389925704358673,
+            "7000141": 0.022742135822225115,
+            "7000142": 0.027918644887424626,
+            "7000143": 0.01873338931295359,
+            "7000144": 0.016025907222734184,
+            "7000145": 0.022171028200830133,
+            "7000146": 0.01902440287173489,
+            "7000147": 0.02629840314051355,
+            "7000148": 0.024025802059377023,
+            "7000149": 0.024523768773098198,
+            "7000150": 0.022392950067184943,
+            "7000151": 0.02060916689349342,
+            "7000152": 0.02604235975698254,
+            "7000153": 0.019307901152434644
+          }
+        },
+        "nominal_hold": {
+          "balanced_mae": 0.01768987348743255,
+          "goal_mae": 0.00994083699386659,
+          "modulator_mae": 0.025438909980998514,
+          "coordinate_mae": {
+            "goal.individuation": 0.00336483886696775,
+            "goal.transcendence": 0.020229601812591088,
+            "goal.mineral_acquisition": 0.020720972408116736,
+            "goal.energy_preservation": 0.002650180541744942,
+            "goal.navigation_efficiency": 0.019048774491399686,
+            "goal.lava_exposure": 0.0034041921847453756,
+            "goal.boundary_collision": 0.00016729865150048512,
+            "modulator.valence": 0.028374914325749803,
+            "modulator.arousal": 0.011054707794392151,
+            "modulator.approach": 0.027454259675588403,
+            "modulator.resolution": 0.030324914224578083,
+            "modulator.threshold": 0.027470859083709363,
+            "modulator.securing": 0.027953804781973273
+          },
+          "episode_balanced_mae": {
+            "7000130": 0.018857283308215848,
+            "7000131": 0.02286513894882251,
+            "7000132": 0.02226447077890944,
+            "7000133": 0.01739547940340387,
+            "7000134": 0.021019103417741162,
+            "7000135": 0.014288920666971273,
+            "7000136": 0.014772463105981746,
+            "7000137": 0.014733526272347142,
+            "7000138": 0.017944808935236846,
+            "7000139": 0.014893016247646346,
+            "7000140": 0.011529903360988702,
+            "7000141": 0.018320490908685726,
+            "7000142": 0.022389223319377302,
+            "7000143": 0.015199769006494725,
+            "7000144": 0.012819784049942627,
+            "7000145": 0.017977687327454445,
+            "7000146": 0.01537656497346664,
+            "7000147": 0.021272878575983596,
+            "7000148": 0.019536481738885034,
+            "7000149": 0.01976052115855175,
+            "7000150": 0.018057132453194305,
+            "7000151": 0.016678728767369207,
+            "7000152": 0.02094449334192989,
+            "7000153": 0.01565909363078107
+          }
+        },
+        "nominal_trend": {
+          "balanced_mae": 0.00476600255413913,
+          "goal_mae": 0.0027354439664774863,
+          "modulator_mae": 0.006796561141800773,
+          "coordinate_mae": {
+            "goal.individuation": 0.0023354830477260555,
+            "goal.transcendence": 0.003888224528297768,
+            "goal.mineral_acquisition": 0.004686611248274368,
+            "goal.energy_preservation": 0.003452355427233243,
+            "goal.navigation_efficiency": 0.0023803303410815553,
+            "goal.lava_exposure": 0.002329175071689756,
+            "goal.boundary_collision": 7.59281010396533e-05,
+            "modulator.valence": 0.006506511342816228,
+            "modulator.arousal": 0.0032047127299907464,
+            "modulator.approach": 0.007913104366182996,
+            "modulator.resolution": 0.00592720704949975,
+            "modulator.threshold": 0.008480236599593053,
+            "modulator.securing": 0.008747594762721852
+          },
+          "episode_balanced_mae": {
+            "7000130": 0.005492225953556586,
+            "7000131": 0.0029449898573253247,
+            "7000132": 0.002961577047748193,
+            "7000133": 0.005480714593039708,
+            "7000134": 0.005627125874847304,
+            "7000135": 0.007877731234417061,
+            "7000136": 0.002581582205128357,
+            "7000137": 0.0021494818073492647,
+            "7000138": 0.004133186967829144,
+            "7000139": 0.00474257860412112,
+            "7000140": 0.0011506293361046695,
+            "7000141": 0.0025003757837168445,
+            "7000142": 0.003143476699117917,
+            "7000143": 0.008985699031869408,
+            "7000144": 0.006728361690855906,
+            "7000145": 0.008665084798281533,
+            "7000146": 0.00235047839740831,
+            "7000147": 0.0052054957889362714,
+            "7000148": 0.007975455063539078,
+            "7000149": 0.0033615891048499004,
+            "7000150": 0.0024833760785460874,
+            "7000151": 0.007786171793470185,
+            "7000152": 0.002575616392559529,
+            "7000153": 0.007481057194721419
+          }
+        },
+        "mean_residual": {
+          "balanced_mae": 0.00907781593640071,
+          "goal_mae": 0.004101913337662988,
+          "modulator_mae": 0.014053718535138433,
+          "coordinate_mae": {
+            "goal.individuation": 0.004331309480457572,
+            "goal.transcendence": 0.006820040038331847,
+            "goal.mineral_acquisition": 0.005292644663403068,
+            "goal.energy_preservation": 0.003099970205237016,
+            "goal.navigation_efficiency": 0.0046685379122769,
+            "goal.lava_exposure": 0.0041870894622609844,
+            "goal.boundary_collision": 0.00031380160167356373,
+            "modulator.valence": 0.009428001954502049,
+            "modulator.arousal": 0.004976369963985883,
+            "modulator.approach": 0.010724260352636492,
+            "modulator.resolution": 0.00920904844833189,
+            "modulator.threshold": 0.02509873940945354,
+            "modulator.securing": 0.024885891081920773
+          },
+          "episode_balanced_mae": {
+            "7000130": 0.008290302992218678,
+            "7000131": 0.011994538020154362,
+            "7000132": 0.011504101651327479,
+            "7000133": 0.007616003523271816,
+            "7000134": 0.01035239703295118,
+            "7000135": 0.008845770853043295,
+            "7000136": 0.0075410639614141226,
+            "7000137": 0.0076298283158414675,
+            "7000138": 0.008185199557262279,
+            "7000139": 0.0063616627587924374,
+            "7000140": 0.007435319667665237,
+            "7000141": 0.00862440792140664,
+            "7000142": 0.01185415630715026,
+            "7000143": 0.00902061721285817,
+            "7000144": 0.010168678332857686,
+            "7000145": 0.01098733697593637,
+            "7000146": 0.007473729810699576,
+            "7000147": 0.009798622684829643,
+            "7000148": 0.009016849420262266,
+            "7000149": 0.008692861405409494,
+            "7000150": 0.008686044292537309,
+            "7000151": 0.009109071576044861,
+            "7000152": 0.01097648160877076,
+            "7000153": 0.007702536590911694
+          }
+        },
+        "ridge": {
+          "balanced_mae": 0.00274212392941125,
+          "goal_mae": 0.001554507414877442,
+          "modulator_mae": 0.003929740443945058,
+          "coordinate_mae": {
+            "goal.individuation": 0.0017470624593754567,
+            "goal.transcendence": 0.0024857832416329854,
+            "goal.mineral_acquisition": 0.0021081620248250975,
+            "goal.energy_preservation": 0.0012497103823518813,
+            "goal.navigation_efficiency": 0.0015377561122668951,
+            "goal.lava_exposure": 0.0016827853080496542,
+            "goal.boundary_collision": 7.02923756401261e-05,
+            "modulator.valence": 0.003924700499059284,
+            "modulator.arousal": 0.0019403422280490049,
+            "modulator.approach": 0.004858216810210574,
+            "modulator.resolution": 0.0033274883748181136,
+            "modulator.threshold": 0.00466780258667497,
+            "modulator.securing": 0.004859892164858403
+          },
+          "episode_balanced_mae": {
+            "7000130": 0.0022028934549396992,
+            "7000131": 0.0014524332671860918,
+            "7000132": 0.0014509112413541392,
+            "7000133": 0.0022737201671322645,
+            "7000134": 0.00325386083968901,
+            "7000135": 0.004367832845040349,
+            "7000136": 0.001368730327042642,
+            "7000137": 0.0021876013510446685,
+            "7000138": 0.002292725346649673,
+            "7000139": 0.002370553931601671,
+            "7000140": 0.0017472537654307382,
+            "7000141": 0.0011087373429851642,
+            "7000142": 0.0015909610995611882,
+            "7000143": 0.005818461776222466,
+            "7000144": 0.005118615487817807,
+            "7000145": 0.004874423958722192,
+            "7000146": 0.0012628540031404127,
+            "7000147": 0.0031532949594410995,
+            "7000148": 0.004638800976650604,
+            "7000149": 0.0014350255062711046,
+            "7000150": 0.0008845708899525615,
+            "7000151": 0.004742541201777211,
+            "7000152": 0.0013316965605123761,
+            "7000153": 0.00488247400570487
+          }
+        },
+        "neural_32": {
+          "balanced_mae": 0.0026541554211902173,
+          "goal_mae": 0.0014844440538736852,
+          "modulator_mae": 0.00382386678850675,
+          "coordinate_mae": {
+            "goal.individuation": 0.0016175218061966572,
+            "goal.transcendence": 0.002415403819685152,
+            "goal.mineral_acquisition": 0.0019610836558099755,
+            "goal.energy_preservation": 0.0012007547395581773,
+            "goal.navigation_efficiency": 0.0015473318991448795,
+            "goal.lava_exposure": 0.0015596523543991358,
+            "goal.boundary_collision": 8.936010232181596e-05,
+            "modulator.valence": 0.003978438808904331,
+            "modulator.arousal": 0.001806613361986443,
+            "modulator.approach": 0.004836709611130469,
+            "modulator.resolution": 0.003279124704675673,
+            "modulator.threshold": 0.0044331612592385175,
+            "modulator.securing": 0.004609152985105059
+          },
+          "episode_balanced_mae": {
+            "7000130": 0.0017384798753344722,
+            "7000131": 0.0017375848339490072,
+            "7000132": 0.0013612230007208148,
+            "7000133": 0.0015940207727275686,
+            "7000134": 0.0033883378790611793,
+            "7000135": 0.0035610359000242944,
+            "7000136": 0.0014504583845019391,
+            "7000137": 0.0020155622352575286,
+            "7000138": 0.0018190396971567648,
+            "7000139": 0.002962123381905585,
+            "7000140": 0.001398322093742876,
+            "7000141": 0.0010995945233564976,
+            "7000142": 0.001887367156637238,
+            "7000143": 0.005745544060002523,
+            "7000144": 0.005774160551916178,
+            "7000145": 0.004155660368353086,
+            "7000146": 0.001321835630091817,
+            "7000147": 0.003504517116292459,
+            "7000148": 0.003641578526166062,
+            "7000149": 0.001796672907972714,
+            "7000150": 0.001036155949071904,
+            "7000151": 0.004960337050827667,
+            "7000152": 0.0013010450250488725,
+            "7000153": 0.004449073188446169
+          }
+        }
+      },
+      "mean_absolute_actual_five_step_change": {
+        "goal.individuation": 0.004190775836183537,
+        "goal.transcendence": 0.02515463183079491,
+        "goal.mineral_acquisition": 0.025958771057513205,
+        "goal.energy_preservation": 0.003243161062507594,
+        "goal.navigation_efficiency": 0.023690244235998678,
+        "goal.lava_exposure": 0.004215756421380786,
+        "goal.boundary_collision": 0.00019021477964126257,
+        "modulator.valence": 0.03561510293907325,
+        "modulator.arousal": 0.013573110464772845,
+        "modulator.approach": 0.03430193344103609,
+        "modulator.resolution": 0.038147518655399684,
+        "modulator.threshold": 0.03322066359541017,
+        "modulator.securing": 0.033854051253143974
+      },
+      "neural_vs_selected_rule": {
+        "mean_episode_mae_reduction": 0.0021118471329489128,
+        "bootstrap_95_percent_interval": [
+          0.0016103897437889302,
+          0.002647807681521701
+        ],
+        "episodes": 24
+      },
+      "neural_vs_ridge": {
+        "mean_episode_mae_reduction": 8.796850822103276e-05,
+        "bootstrap_95_percent_interval": [
+          -7.977791052791647e-05,
+          0.00026348824915666625
+        ],
+        "episodes": 24
+      },
+      "neural_beats_all_baselines_for_goals_and_modulators": true,
+      "live_behavior_unchanged": true,
+      "q_and_existing_self_model_frozen": true
+    },
+    {
+      "agent_seed": 101,
+      "pretrain_seed_start": 7100000,
+      "train_seed_start": 7100030,
+      "validation_seed_start": 7100110,
+      "test_seed_start": 7100130,
+      "samples": {
+        "train": 2880,
+        "validation": 720,
+        "test": 864
+      },
+      "selected_rule": "nominal_trend",
+      "ridge_selection": {
+        "penalty": 0.01,
+        "validation_balanced_mae": 0.0035127360154506605
+      },
+      "neural_selection": {
+        "seed": 1101,
+        "best_epoch": 57,
+        "epochs_run": 87,
+        "validation_balanced_mae": 0.003434225067161268,
+        "parameter_count": 1869,
+        "validation_history": [
+          {
+            "epoch": 0,
+            "validation_balanced_mae": 0.009155501317562017
+          },
+          {
+            "epoch": 10,
+            "validation_balanced_mae": 0.0040773278245864585
+          },
+          {
+            "epoch": 20,
+            "validation_balanced_mae": 0.003668381262825746
+          },
+          {
+            "epoch": 30,
+            "validation_balanced_mae": 0.003555785265798591
+          },
+          {
+            "epoch": 40,
+            "validation_balanced_mae": 0.003477887590205413
+          },
+          {
+            "epoch": 50,
+            "validation_balanced_mae": 0.0034395970928643724
+          },
+          {
+            "epoch": 60,
+            "validation_balanced_mae": 0.0034501657544532206
+          },
+          {
+            "epoch": 70,
+            "validation_balanced_mae": 0.0034592009622425464
+          },
+          {
+            "epoch": 80,
+            "validation_balanced_mae": 0.0034489255048505843
+          }
+        ]
+      },
+      "neural_initializations": [
+        {
+          "seed": 1100,
+          "best_epoch": 57,
+          "epochs_run": 87,
+          "validation_balanced_mae": 0.003458641653598632,
+          "parameter_count": 1869,
+          "validation_history": [
+            {
+              "epoch": 0,
+              "validation_balanced_mae": 0.009155501317562017
+            },
+            {
+              "epoch": 10,
+              "validation_balanced_mae": 0.004060573836800195
+            },
+            {
+              "epoch": 20,
+              "validation_balanced_mae": 0.0036661453613283587
+            },
+            {
+              "epoch": 30,
+              "validation_balanced_mae": 0.003560543829489419
+            },
+            {
+              "epoch": 40,
+              "validation_balanced_mae": 0.003489467299957433
+            },
+            {
+              "epoch": 50,
+              "validation_balanced_mae": 0.003460345065920845
+            },
+            {
+              "epoch": 60,
+              "validation_balanced_mae": 0.0034744472581886817
+            },
+            {
+              "epoch": 70,
+              "validation_balanced_mae": 0.0034729405738070365
+            },
+            {
+              "epoch": 80,
+              "validation_balanced_mae": 0.0035110881107348266
+            }
+          ],
+          "test_balanced_mae": 0.003085774644353733
+        },
+        {
+          "seed": 1101,
+          "best_epoch": 57,
+          "epochs_run": 87,
+          "validation_balanced_mae": 0.003434225067161268,
+          "parameter_count": 1869,
+          "validation_history": [
+            {
+              "epoch": 0,
+              "validation_balanced_mae": 0.009155501317562017
+            },
+            {
+              "epoch": 10,
+              "validation_balanced_mae": 0.0040773278245864585
+            },
+            {
+              "epoch": 20,
+              "validation_balanced_mae": 0.003668381262825746
+            },
+            {
+              "epoch": 30,
+              "validation_balanced_mae": 0.003555785265798591
+            },
+            {
+              "epoch": 40,
+              "validation_balanced_mae": 0.003477887590205413
+            },
+            {
+              "epoch": 50,
+              "validation_balanced_mae": 0.0034395970928643724
+            },
+            {
+              "epoch": 60,
+              "validation_balanced_mae": 0.0034501657544532206
+            },
+            {
+              "epoch": 70,
+              "validation_balanced_mae": 0.0034592009622425464
+            },
+            {
+              "epoch": 80,
+              "validation_balanced_mae": 0.0034489255048505843
+            }
+          ],
+          "test_balanced_mae": 0.003058136604150444
+        },
+        {
+          "seed": 1102,
+          "best_epoch": 46,
+          "epochs_run": 76,
+          "validation_balanced_mae": 0.0034594763805605036,
+          "parameter_count": 1869,
+          "validation_history": [
+            {
+              "epoch": 0,
+              "validation_balanced_mae": 0.009155501317562017
+            },
+            {
+              "epoch": 10,
+              "validation_balanced_mae": 0.004033861905224042
+            },
+            {
+              "epoch": 20,
+              "validation_balanced_mae": 0.003644570325134223
+            },
+            {
+              "epoch": 30,
+              "validation_balanced_mae": 0.003500437783727969
+            },
+            {
+              "epoch": 40,
+              "validation_balanced_mae": 0.0034786350136758
+            },
+            {
+              "epoch": 50,
+              "validation_balanced_mae": 0.00346855762697611
+            },
+            {
+              "epoch": 60,
+              "validation_balanced_mae": 0.003486378981703366
+            },
+            {
+              "epoch": 70,
+              "validation_balanced_mae": 0.003493319434720965
+            }
+          ],
+          "test_balanced_mae": 0.0030780404611701127
+        }
+      ],
+      "test_metrics": {
+        "persistence": {
+          "balanced_mae": 0.023806957066123742,
+          "goal_mae": 0.013085605047523912,
+          "modulator_mae": 0.034528309084723575,
+          "coordinate_mae": {
+            "goal.individuation": 0.0041968358449735715,
+            "goal.transcendence": 0.02695704193450361,
+            "goal.mineral_acquisition": 0.027560585173597784,
+            "goal.energy_preservation": 0.0033056612018190898,
+            "goal.navigation_efficiency": 0.025294542550753436,
+            "goal.lava_exposure": 0.004085376866145711,
+            "goal.boundary_collision": 0.00019919176087415,
+            "modulator.valence": 0.03741855288985074,
+            "modulator.arousal": 0.01371335024623709,
+            "modulator.approach": 0.03674122456832984,
+            "modulator.resolution": 0.03920547490649306,
+            "modulator.threshold": 0.03976438243836797,
+            "modulator.securing": 0.040326869459062775
+          },
+          "episode_balanced_mae": {
+            "7100130": 0.022105939946840274,
+            "7100131": 0.022739502190752194,
+            "7100132": 0.02046933453458836,
+            "7100133": 0.02342651136050596,
+            "7100134": 0.025446087309682026,
+            "7100135": 0.01955786605537608,
+            "7100136": 0.023318944066630015,
+            "7100137": 0.02469377658200343,
+            "7100138": 0.02552828049381655,
+            "7100139": 0.019727792849435096,
+            "7100140": 0.026338236665743923,
+            "7100141": 0.02808592808270341,
+            "7100142": 0.025464415643050523,
+            "7100143": 0.025342696426833643,
+            "7100144": 0.025656881461225616,
+            "7100145": 0.025801597866251233,
+            "7100146": 0.024568635646161643,
+            "7100147": 0.023143592257124056,
+            "7100148": 0.025921773942163197,
+            "7100149": 0.02060260665748255,
+            "7100150": 0.023909068562118108,
+            "7100151": 0.023159675278669162,
+            "7100152": 0.021016396918428593,
+            "7100153": 0.02534142878938417
+          }
+        },
+        "nominal_hold": {
+          "balanced_mae": 0.019229463222775387,
+          "goal_mae": 0.010508271888722354,
+          "modulator_mae": 0.02795065455682842,
+          "coordinate_mae": {
+            "goal.individuation": 0.003384121500930607,
+            "goal.transcendence": 0.021668862734291208,
+            "goal.mineral_acquisition": 0.02194801785408657,
+            "goal.energy_preservation": 0.002732149704743678,
+            "goal.navigation_efficiency": 0.020318960806639946,
+            "goal.lava_exposure": 0.003328219181022835,
+            "goal.boundary_collision": 0.00017757143934158138,
+            "modulator.valence": 0.02979929264394199,
+            "modulator.arousal": 0.011184949057705071,
+            "modulator.approach": 0.029372526906435024,
+            "modulator.resolution": 0.031155077210262047,
+            "modulator.threshold": 0.032885933394150316,
+            "modulator.securing": 0.03330614812847597
+          },
+          "episode_balanced_mae": {
+            "7100130": 0.017981946877943814,
+            "7100131": 0.018409287311711695,
+            "7100132": 0.01657194829285234,
+            "7100133": 0.01895472339455655,
+            "7100134": 0.020484969916243698,
+            "7100135": 0.015964830286397606,
+            "7100136": 0.018772434010108967,
+            "7100137": 0.01991211290618918,
+            "7100138": 0.02057050590186302,
+            "7100139": 0.015981403189215336,
+            "7100140": 0.021157149488248102,
+            "7100141": 0.022621887661714545,
+            "7100142": 0.02051607394495635,
+            "7100143": 0.020455379390432953,
+            "7100144": 0.020688234816717683,
+            "7100145": 0.020793849605440857,
+            "7100146": 0.01981073103780793,
+            "7100147": 0.018975153419743106,
+            "7100148": 0.020823502821899733,
+            "7100149": 0.016806851963303872,
+            "7100150": 0.019281278994160107,
+            "7100151": 0.018673603448440546,
+            "7100152": 0.016930450052097798,
+            "7100153": 0.020368808614563458
+          }
+        },
+        "nominal_trend": {
+          "balanced_mae": 0.0053019374909627215,
+          "goal_mae": 0.003058409819610187,
+          "modulator_mae": 0.007545465162315257,
+          "coordinate_mae": {
+            "goal.individuation": 0.002806405781405688,
+            "goal.transcendence": 0.004536692321313863,
+            "goal.mineral_acquisition": 0.004759426445781552,
+            "goal.energy_preservation": 0.0036546341414675615,
+            "goal.navigation_efficiency": 0.0027851819096471535,
+            "goal.lava_exposure": 0.0027696400715922784,
+            "goal.boundary_collision": 9.688806606319442e-05,
+            "modulator.valence": 0.007036866487976693,
+            "modulator.arousal": 0.0036801237993218457,
+            "modulator.approach": 0.008651704816935814,
+            "modulator.resolution": 0.006546789717072632,
+            "modulator.threshold": 0.009534331717758408,
+            "modulator.securing": 0.009822974434826161
+          },
+          "episode_balanced_mae": {
+            "7100130": 0.0069555310893327366,
+            "7100131": 0.008901487579370596,
+            "7100132": 0.003050934638500328,
+            "7100133": 0.00725723769356512,
+            "7100134": 0.0037872455451813973,
+            "7100135": 0.006296536641190614,
+            "7100136": 0.006796609216731977,
+            "7100137": 0.003521430170710815,
+            "7100138": 0.005718728243938468,
+            "7100139": 0.004430110091870249,
+            "7100140": 0.0026557328111256064,
+            "7100141": 0.0031161283098395374,
+            "7100142": 0.006556323940652911,
+            "7100143": 0.006463626189292755,
+            "7100144": 0.0027004656372260818,
+            "7100145": 0.00287660011584772,
+            "7100146": 0.0080201781609335,
+            "7100147": 0.006130413949634804,
+            "7100148": 0.005479414173052852,
+            "7100149": 0.007519589775428482,
+            "7100150": 0.004867515654297085,
+            "7100151": 0.008888084552213312,
+            "7100152": 0.0021583497366434957,
+            "7100153": 0.003098225866524875
+          }
+        },
+        "mean_residual": {
+          "balanced_mae": 0.009944766915537239,
+          "goal_mae": 0.004227394000232241,
+          "modulator_mae": 0.015662139830842237,
+          "coordinate_mae": {
+            "goal.individuation": 0.004480816879478345,
+            "goal.transcendence": 0.006837028266405766,
+            "goal.mineral_acquisition": 0.006060046581222377,
+            "goal.energy_preservation": 0.003342911937319445,
+            "goal.navigation_efficiency": 0.004304464594087864,
+            "goal.lava_exposure": 0.004268499450335667,
+            "goal.boundary_collision": 0.0002979902927761888,
+            "modulator.valence": 0.010696070808235803,
+            "modulator.arousal": 0.005634982284642977,
+            "modulator.approach": 0.012299285245436822,
+            "modulator.resolution": 0.010516297283856573,
+            "modulator.threshold": 0.02750474546809212,
+            "modulator.securing": 0.027321457894789146
+          },
+          "episode_balanced_mae": {
+            "7100130": 0.00906799564211098,
+            "7100131": 0.009970976242849337,
+            "7100132": 0.007989195628793043,
+            "7100133": 0.008482781827110115,
+            "7100134": 0.009258420912243505,
+            "7100135": 0.009807907125170866,
+            "7100136": 0.00835748320336335,
+            "7100137": 0.00954430214123119,
+            "7100138": 0.010714083917361393,
+            "7100139": 0.010308289905983148,
+            "7100140": 0.011036935937243869,
+            "7100141": 0.012076449160833645,
+            "7100142": 0.013417538133138958,
+            "7100143": 0.011545467221411696,
+            "7100144": 0.010931564086217841,
+            "7100145": 0.010918809862316605,
+            "7100146": 0.009902216872747357,
+            "7100147": 0.012016155226151392,
+            "7100148": 0.008336819955475904,
+            "7100149": 0.01024312077610697,
+            "7100150": 0.008370213859227985,
+            "7100151": 0.008096452640207,
+            "7100152": 0.007925213595889678,
+            "7100153": 0.010356012099707927
+          }
+        },
+        "ridge": {
+          "balanced_mae": 0.0031540489315311352,
+          "goal_mae": 0.0018274614092117702,
+          "modulator_mae": 0.0044806364538505,
+          "coordinate_mae": {
+            "goal.individuation": 0.0021415729206220573,
+            "goal.transcendence": 0.0031552634659201485,
+            "goal.mineral_acquisition": 0.002050668891447121,
+            "goal.energy_preservation": 0.001524008141556697,
+            "goal.navigation_efficiency": 0.0018026372364399758,
+            "goal.lava_exposure": 0.002044632073038747,
+            "goal.boundary_collision": 7.344713545764127e-05,
+            "modulator.valence": 0.004533047242793796,
+            "modulator.arousal": 0.0023485164172963916,
+            "modulator.approach": 0.0057579165983241065,
+            "modulator.resolution": 0.003999348030047197,
+            "modulator.threshold": 0.005036621672829712,
+            "modulator.securing": 0.005208368761811797
+          },
+          "episode_balanced_mae": {
+            "7100130": 0.003897449761525354,
+            "7100131": 0.004481715587860068,
+            "7100132": 0.0017669261202327485,
+            "7100133": 0.004251071346464774,
+            "7100134": 0.0016624840006074341,
+            "7100135": 0.004404129472403576,
+            "7100136": 0.003735687543827447,
+            "7100137": 0.0021373929225208302,
+            "7100138": 0.003009869833867022,
+            "7100139": 0.00427295201947599,
+            "7100140": 0.001370287144037038,
+            "7100141": 0.0019603261959582076,
+            "7100142": 0.004285898595873489,
+            "7100143": 0.004136658934199339,
+            "7100144": 0.001276848830486376,
+            "7100145": 0.0013842223873656064,
+            "7100146": 0.004519289120257196,
+            "7100147": 0.0036697309781796687,
+            "7100148": 0.003201561948350055,
+            "7100149": 0.004624403649213881,
+            "7100150": 0.0025823337499910766,
+            "7100151": 0.0048325353269012186,
+            "7100152": 0.001569436146957229,
+            "7100153": 0.0026639627401916243
+          }
+        },
+        "neural_32": {
+          "balanced_mae": 0.003058136604150444,
+          "goal_mae": 0.0017621257608738184,
+          "modulator_mae": 0.004354147447427069,
+          "coordinate_mae": {
+            "goal.individuation": 0.0020525803771022505,
+            "goal.transcendence": 0.0028955535987385834,
+            "goal.mineral_acquisition": 0.002091348937880228,
+            "goal.energy_preservation": 0.001475590472781428,
+            "goal.navigation_efficiency": 0.001735298568910613,
+            "goal.lava_exposure": 0.0019853779139552374,
+            "goal.boundary_collision": 9.913045674839271e-05,
+            "modulator.valence": 0.004176717651029745,
+            "modulator.arousal": 0.0023921614233629934,
+            "modulator.approach": 0.005329583788058216,
+            "modulator.resolution": 0.003785940798963387,
+            "modulator.threshold": 0.005112142923027751,
+            "modulator.securing": 0.005328338100120315
+          },
+          "episode_balanced_mae": {
+            "7100130": 0.0035802264288841527,
+            "7100131": 0.004438545839872583,
+            "7100132": 0.0017982790195623516,
+            "7100133": 0.0037478551050284777,
+            "7100134": 0.0022542444368745616,
+            "7100135": 0.00347553225323042,
+            "7100136": 0.004209939653255347,
+            "7100137": 0.0020172639924289507,
+            "7100138": 0.0028051456365527144,
+            "7100139": 0.00497620046883559,
+            "7100140": 0.0011739391433211346,
+            "7100141": 0.002413907023259316,
+            "7100142": 0.0038626180308125677,
+            "7100143": 0.0037299086804091185,
+            "7100144": 0.001544726164175356,
+            "7100145": 0.001431370783375704,
+            "7100146": 0.004008816937672265,
+            "7100147": 0.0037839232862670784,
+            "7100148": 0.003221482121077323,
+            "7100149": 0.004087796583872874,
+            "7100150": 0.002348644713277168,
+            "7100151": 0.004709096291618941,
+            "7100152": 0.0014760694385950132,
+            "7100153": 0.002299746467351648
+          }
+        }
+      },
+      "mean_absolute_actual_five_step_change": {
+        "goal.individuation": 0.0041968358449735715,
+        "goal.transcendence": 0.02695704193450361,
+        "goal.mineral_acquisition": 0.027560585173597784,
+        "goal.energy_preservation": 0.0033056612018190898,
+        "goal.navigation_efficiency": 0.025294542550753436,
+        "goal.lava_exposure": 0.004085376866145711,
+        "goal.boundary_collision": 0.00019919176087415,
+        "modulator.valence": 0.03741855288985074,
+        "modulator.arousal": 0.01371335024623709,
+        "modulator.approach": 0.03674122456832984,
+        "modulator.resolution": 0.03920547490649306,
+        "modulator.threshold": 0.03976438243836797,
+        "modulator.securing": 0.040326869459062775
+      },
+      "neural_vs_selected_rule": {
+        "mean_episode_mae_reduction": 0.0022438008868122775,
+        "bootstrap_95_percent_interval": [
+          0.001739437407129187,
+          0.0027177022804696555
+        ],
+        "episodes": 24
+      },
+      "neural_vs_ridge": {
+        "mean_episode_mae_reduction": 9.591232738069136e-05,
+        "bootstrap_95_percent_interval": [
+          -6.0833791256861815e-05,
+          0.000245530389952947
+        ],
+        "episodes": 24
+      },
+      "neural_beats_all_baselines_for_goals_and_modulators": true,
+      "live_behavior_unchanged": true,
+      "q_and_existing_self_model_frozen": true
+    },
+    {
+      "agent_seed": 102,
+      "pretrain_seed_start": 7200000,
+      "train_seed_start": 7200030,
+      "validation_seed_start": 7200110,
+      "test_seed_start": 7200130,
+      "samples": {
+        "train": 2880,
+        "validation": 720,
+        "test": 864
+      },
+      "selected_rule": "nominal_trend",
+      "ridge_selection": {
+        "penalty": 0.01,
+        "validation_balanced_mae": 0.0029712961941873225
+      },
+      "neural_selection": {
+        "seed": 1202,
+        "best_epoch": 80,
+        "epochs_run": 110,
+        "validation_balanced_mae": 0.0029512789298476827,
+        "parameter_count": 1869,
+        "validation_history": [
+          {
+            "epoch": 0,
+            "validation_balanced_mae": 0.008750380901244487
+          },
+          {
+            "epoch": 10,
+            "validation_balanced_mae": 0.00360242137086439
+          },
+          {
+            "epoch": 20,
+            "validation_balanced_mae": 0.003287002468795681
+          },
+          {
+            "epoch": 30,
+            "validation_balanced_mae": 0.0031280523604928674
+          },
+          {
+            "epoch": 40,
+            "validation_balanced_mae": 0.0030291574089019386
+          },
+          {
+            "epoch": 50,
+            "validation_balanced_mae": 0.002998583171513128
+          },
+          {
+            "epoch": 60,
+            "validation_balanced_mae": 0.0029784084798079513
+          },
+          {
+            "epoch": 70,
+            "validation_balanced_mae": 0.0029982940931067544
+          },
+          {
+            "epoch": 80,
+            "validation_balanced_mae": 0.0029512789298476827
+          },
+          {
+            "epoch": 90,
+            "validation_balanced_mae": 0.003003481559067301
+          },
+          {
+            "epoch": 100,
+            "validation_balanced_mae": 0.002996570718507947
+          },
+          {
+            "epoch": 110,
+            "validation_balanced_mae": 0.0029681825388562484
+          }
+        ]
+      },
+      "neural_initializations": [
+        {
+          "seed": 1200,
+          "best_epoch": 66,
+          "epochs_run": 96,
+          "validation_balanced_mae": 0.003020579416022415,
+          "parameter_count": 1869,
+          "validation_history": [
+            {
+              "epoch": 0,
+              "validation_balanced_mae": 0.008750380901244487
+            },
+            {
+              "epoch": 10,
+              "validation_balanced_mae": 0.0036723757618786672
+            },
+            {
+              "epoch": 20,
+              "validation_balanced_mae": 0.0032804330930467753
+            },
+            {
+              "epoch": 30,
+              "validation_balanced_mae": 0.0031603093256639203
+            },
+            {
+              "epoch": 40,
+              "validation_balanced_mae": 0.0030764817910921855
+            },
+            {
+              "epoch": 50,
+              "validation_balanced_mae": 0.003052333119731133
+            },
+            {
+              "epoch": 60,
+              "validation_balanced_mae": 0.003041590016495901
+            },
+            {
+              "epoch": 70,
+              "validation_balanced_mae": 0.003032755488480874
+            },
+            {
+              "epoch": 80,
+              "validation_balanced_mae": 0.0030568228864912587
+            },
+            {
+              "epoch": 90,
+              "validation_balanced_mae": 0.0030342926445443255
+            }
+          ],
+          "test_balanced_mae": 0.0031204020454798907
+        },
+        {
+          "seed": 1201,
+          "best_epoch": 116,
+          "epochs_run": 146,
+          "validation_balanced_mae": 0.002961180575214451,
+          "parameter_count": 1869,
+          "validation_history": [
+            {
+              "epoch": 0,
+              "validation_balanced_mae": 0.008750380901244487
+            },
+            {
+              "epoch": 10,
+              "validation_balanced_mae": 0.00366260119972969
+            },
+            {
+              "epoch": 20,
+              "validation_balanced_mae": 0.0032771300189666317
+            },
+            {
+              "epoch": 30,
+              "validation_balanced_mae": 0.003133226086645056
+            },
+            {
+              "epoch": 40,
+              "validation_balanced_mae": 0.003089784476905483
+            },
+            {
+              "epoch": 50,
+              "validation_balanced_mae": 0.0030507383783285103
+            },
+            {
+              "epoch": 60,
+              "validation_balanced_mae": 0.0030223439763089957
+            },
+            {
+              "epoch": 70,
+              "validation_balanced_mae": 0.0030204286682826943
+            },
+            {
+              "epoch": 80,
+              "validation_balanced_mae": 0.002999500180683132
+            },
+            {
+              "epoch": 90,
+              "validation_balanced_mae": 0.0030445867276897784
+            },
+            {
+              "epoch": 100,
+              "validation_balanced_mae": 0.0029958995006711445
+            },
+            {
+              "epoch": 110,
+              "validation_balanced_mae": 0.0029928067710172615
+            },
+            {
+              "epoch": 120,
+              "validation_balanced_mae": 0.002968381976060403
+            },
+            {
+              "epoch": 130,
+              "validation_balanced_mae": 0.0029939342649388766
+            },
+            {
+              "epoch": 140,
+              "validation_balanced_mae": 0.0030281072126311158
+            }
+          ],
+          "test_balanced_mae": 0.0031377594113377568
+        },
+        {
+          "seed": 1202,
+          "best_epoch": 80,
+          "epochs_run": 110,
+          "validation_balanced_mae": 0.0029512789298476827,
+          "parameter_count": 1869,
+          "validation_history": [
+            {
+              "epoch": 0,
+              "validation_balanced_mae": 0.008750380901244487
+            },
+            {
+              "epoch": 10,
+              "validation_balanced_mae": 0.00360242137086439
+            },
+            {
+              "epoch": 20,
+              "validation_balanced_mae": 0.003287002468795681
+            },
+            {
+              "epoch": 30,
+              "validation_balanced_mae": 0.0031280523604928674
+            },
+            {
+              "epoch": 40,
+              "validation_balanced_mae": 0.0030291574089019386
+            },
+            {
+              "epoch": 50,
+              "validation_balanced_mae": 0.002998583171513128
+            },
+            {
+              "epoch": 60,
+              "validation_balanced_mae": 0.0029784084798079513
+            },
+            {
+              "epoch": 70,
+              "validation_balanced_mae": 0.0029982940931067544
+            },
+            {
+              "epoch": 80,
+              "validation_balanced_mae": 0.0029512789298476827
+            },
+            {
+              "epoch": 90,
+              "validation_balanced_mae": 0.003003481559067301
+            },
+            {
+              "epoch": 100,
+              "validation_balanced_mae": 0.002996570718507947
+            },
+            {
+              "epoch": 110,
+              "validation_balanced_mae": 0.0029681825388562484
+            }
+          ],
+          "test_balanced_mae": 0.0030482543284352107
+        }
+      ],
+      "test_metrics": {
+        "persistence": {
+          "balanced_mae": 0.02242921486109504,
+          "goal_mae": 0.01259318031539064,
+          "modulator_mae": 0.03226524940679944,
+          "coordinate_mae": {
+            "goal.individuation": 0.005774196427157379,
+            "goal.transcendence": 0.023453814419556875,
+            "goal.mineral_acquisition": 0.02602246899818505,
+            "goal.energy_preservation": 0.004220729880064279,
+            "goal.navigation_efficiency": 0.023097604984556083,
+            "goal.lava_exposure": 0.005418520370245785,
+            "goal.boundary_collision": 0.00016492712796902572,
+            "modulator.valence": 0.0346965183786544,
+            "modulator.arousal": 0.015093772048362711,
+            "modulator.approach": 0.03288791649903584,
+            "modulator.resolution": 0.037199292368314256,
+            "modulator.threshold": 0.03653183352045752,
+            "modulator.securing": 0.03718216362597187
+          },
+          "episode_balanced_mae": {
+            "7200130": 0.022318376171752377,
+            "7200131": 0.020049749553830102,
+            "7200132": 0.01704332717065699,
+            "7200133": 0.02595066777133228,
+            "7200134": 0.024096544945121586,
+            "7200135": 0.022018406544407447,
+            "7200136": 0.025749444668543085,
+            "7200137": 0.024258924933450658,
+            "7200138": 0.024836313700902488,
+            "7200139": 0.017179999199453514,
+            "7200140": 0.024986749273113937,
+            "7200141": 0.026572519512241766,
+            "7200142": 0.023993459122847074,
+            "7200143": 0.01761859473830915,
+            "7200144": 0.025730656381518016,
+            "7200145": 0.015298343067349483,
+            "7200146": 0.021456569420505035,
+            "7200147": 0.021878783832959797,
+            "7200148": 0.017731097951002913,
+            "7200149": 0.025290712706784846,
+            "7200150": 0.02424911379637449,
+            "7200151": 0.02479900239329218,
+            "7200152": 0.021661353869155686,
+            "7200153": 0.023532445941375976
+          }
+        },
+        "nominal_hold": {
+          "balanced_mae": 0.018121789835657973,
+          "goal_mae": 0.010117046053803189,
+          "modulator_mae": 0.026126533617512757,
+          "coordinate_mae": {
+            "goal.individuation": 0.004672317822601741,
+            "goal.transcendence": 0.01882140888953159,
+            "goal.mineral_acquisition": 0.020750235666240263,
+            "goal.energy_preservation": 0.003470797900722226,
+            "goal.navigation_efficiency": 0.018555885938404796,
+            "goal.lava_exposure": 0.004401402546112427,
+            "goal.boundary_collision": 0.00014727361300924456,
+            "modulator.valence": 0.027629803689196646,
+            "modulator.arousal": 0.012303252146029604,
+            "modulator.approach": 0.02632957124047797,
+            "modulator.resolution": 0.029564745408676492,
+            "modulator.threshold": 0.030220087641586693,
+            "modulator.securing": 0.030711741579109147
+          },
+          "episode_balanced_mae": {
+            "7200130": 0.018081473073568194,
+            "7200131": 0.016112975127274283,
+            "7200132": 0.01389003023966032,
+            "7200133": 0.02088717774642284,
+            "7200134": 0.019541315875533947,
+            "7200135": 0.017859257064469516,
+            "7200136": 0.020842078044516536,
+            "7200137": 0.019608191762664845,
+            "7200138": 0.020007421238408544,
+            "7200139": 0.013947498463465848,
+            "7200140": 0.020012036783631136,
+            "7200141": 0.021315793309408918,
+            "7200142": 0.01933865318287345,
+            "7200143": 0.014289177488508175,
+            "7200144": 0.020683061261297462,
+            "7200145": 0.012418962976970933,
+            "7200146": 0.017328987766421958,
+            "7200147": 0.017763264058438186,
+            "7200148": 0.014367572222143774,
+            "7200149": 0.02041869572662994,
+            "7200150": 0.019599668558257583,
+            "7200151": 0.019980082497011265,
+            "7200152": 0.01758859424040679,
+            "7200153": 0.019040987347806827
+          }
+        },
+        "nominal_trend": {
+          "balanced_mae": 0.005550032690020556,
+          "goal_mae": 0.0032469242446784936,
+          "modulator_mae": 0.007853141135362618,
+          "coordinate_mae": {
+            "goal.individuation": 0.003098295592748834,
+            "goal.transcendence": 0.0047869619278275875,
+            "goal.mineral_acquisition": 0.0049678176765382475,
+            "goal.energy_preservation": 0.0038230183721699143,
+            "goal.navigation_efficiency": 0.002965801685511135,
+            "goal.lava_exposure": 0.0030021020556815054,
+            "goal.boundary_collision": 8.447240227221893e-05,
+            "modulator.valence": 0.007607095942901372,
+            "modulator.arousal": 0.003960467455852931,
+            "modulator.approach": 0.009409512111404214,
+            "modulator.resolution": 0.0069081208459914655,
+            "modulator.threshold": 0.009463732550152681,
+            "modulator.securing": 0.009769917905873048
+          },
+          "episode_balanced_mae": {
+            "7200130": 0.008737967348314453,
+            "7200131": 0.008262688291529069,
+            "7200132": 0.007059305497396988,
+            "7200133": 0.0026121161632448875,
+            "7200134": 0.0032299959631964335,
+            "7200135": 0.004228683830210503,
+            "7200136": 0.002977083445899617,
+            "7200137": 0.004834446836994383,
+            "7200138": 0.008233975109594067,
+            "7200139": 0.006092341685395378,
+            "7200140": 0.00752099403033347,
+            "7200141": 0.0040066107325443245,
+            "7200142": 0.007220315722536926,
+            "7200143": 0.005448295863463279,
+            "7200144": 0.007422927000499555,
+            "7200145": 0.00314045659063042,
+            "7200146": 0.007544139710793742,
+            "7200147": 0.0054749746781010775,
+            "7200148": 0.004931119640446767,
+            "7200149": 0.0033746726533534564,
+            "7200150": 0.006180739540793876,
+            "7200151": 0.006145889638799512,
+            "7200152": 0.0056053657692092685,
+            "7200153": 0.0029156788172118777
+          }
+        },
+        "mean_residual": {
+          "balanced_mae": 0.009557306915086014,
+          "goal_mae": 0.00428513698063308,
+          "modulator_mae": 0.014829476849538947,
+          "coordinate_mae": {
+            "goal.individuation": 0.0046389864563395125,
+            "goal.transcendence": 0.00704467037674288,
+            "goal.mineral_acquisition": 0.005492233079356901,
+            "goal.energy_preservation": 0.0034960196458797945,
+            "goal.navigation_efficiency": 0.0046598098460838575,
+            "goal.lava_exposure": 0.004385679762368463,
+            "goal.boundary_collision": 0.00027855969766014005,
+            "modulator.valence": 0.009840199473662638,
+            "modulator.arousal": 0.0057873644480047545,
+            "modulator.approach": 0.011645062533377468,
+            "modulator.resolution": 0.009367143542250819,
+            "modulator.threshold": 0.0263136482744452,
+            "modulator.securing": 0.026023442825492765
+          },
+          "episode_balanced_mae": {
+            "7200130": 0.008199690551716411,
+            "7200131": 0.010975365278514677,
+            "7200132": 0.0105588041132657,
+            "7200133": 0.011163710366672651,
+            "7200134": 0.0077686532950761,
+            "7200135": 0.009084890511378011,
+            "7200136": 0.010648374054051186,
+            "7200137": 0.010093713979161945,
+            "7200138": 0.011038648472311913,
+            "7200139": 0.00743945439484467,
+            "7200140": 0.014444355253600353,
+            "7200141": 0.00929985558145337,
+            "7200142": 0.008329442535517236,
+            "7200143": 0.007466862350645077,
+            "7200144": 0.012066131362161593,
+            "7200145": 0.007755031216878551,
+            "7200146": 0.01100171284510703,
+            "7200147": 0.007486534701174246,
+            "7200148": 0.008301485271882519,
+            "7200149": 0.010437751198455943,
+            "7200150": 0.009041807182893252,
+            "7200151": 0.009092413416364504,
+            "7200152": 0.008225324485586903,
+            "7200153": 0.009455353543350496
+          }
+        },
+        "ridge": {
+          "balanced_mae": 0.0032140945882429646,
+          "goal_mae": 0.0019046713081056054,
+          "modulator_mae": 0.004523517868380324,
+          "coordinate_mae": {
+            "goal.individuation": 0.0022106165678615125,
+            "goal.transcendence": 0.0030965856520966057,
+            "goal.mineral_acquisition": 0.0023051713154832675,
+            "goal.energy_preservation": 0.0015656485958827802,
+            "goal.navigation_efficiency": 0.001927151061315749,
+            "goal.lava_exposure": 0.002145937231075572,
+            "goal.boundary_collision": 8.158873302375677e-05,
+            "modulator.valence": 0.004442308260378512,
+            "modulator.arousal": 0.0024238485853123513,
+            "modulator.approach": 0.005686755091576201,
+            "modulator.resolution": 0.003839018039327475,
+            "modulator.threshold": 0.005286487429319781,
+            "modulator.securing": 0.005462689804367632
+          },
+          "episode_balanced_mae": {
+            "7200130": 0.005008529859531121,
+            "7200131": 0.004203740828527939,
+            "7200132": 0.004175055262528463,
+            "7200133": 0.0014550448805135973,
+            "7200134": 0.0016785348016494725,
+            "7200135": 0.002540039913825433,
+            "7200136": 0.002020484846866558,
+            "7200137": 0.0026985555669536156,
+            "7200138": 0.00415546900215952,
+            "7200139": 0.003620237795294961,
+            "7200140": 0.004162156890755507,
+            "7200141": 0.002112406898768528,
+            "7200142": 0.0038007630731176478,
+            "7200143": 0.0034956268503317763,
+            "7200144": 0.004384440483522066,
+            "7200145": 0.0024879501969375336,
+            "7200146": 0.0043397382011898765,
+            "7200147": 0.002858220683036866,
+            "7200148": 0.003527017795966744,
+            "7200149": 0.002075008825274343,
+            "7200150": 0.0037193045280548677,
+            "7200151": 0.003638300889389009,
+            "7200152": 0.003417816408950252,
+            "7200153": 0.0015638256346854514
+          }
+        },
+        "neural_32": {
+          "balanced_mae": 0.0030482543284352107,
+          "goal_mae": 0.0018276040350816672,
+          "modulator_mae": 0.004268904621788755,
+          "coordinate_mae": {
+            "goal.individuation": 0.0021325507159212923,
+            "goal.transcendence": 0.0029811509644171942,
+            "goal.mineral_acquisition": 0.00216085691198755,
+            "goal.energy_preservation": 0.0015347321355370482,
+            "goal.navigation_efficiency": 0.0018438576454001075,
+            "goal.lava_exposure": 0.002043032033599091,
+            "goal.boundary_collision": 9.704783870939295e-05,
+            "modulator.valence": 0.00433600761055954,
+            "modulator.arousal": 0.0023706639644045205,
+            "modulator.approach": 0.005505551803505944,
+            "modulator.resolution": 0.0036136970297466577,
+            "modulator.threshold": 0.004807595783169298,
+            "modulator.securing": 0.004979911539346582
+          },
+          "episode_balanced_mae": {
+            "7200130": 0.00492960285797949,
+            "7200131": 0.0035365288511352184,
+            "7200132": 0.003591834798758127,
+            "7200133": 0.0012070302972685865,
+            "7200134": 0.0021687442822043274,
+            "7200135": 0.002261075676072512,
+            "7200136": 0.001448762268083895,
+            "7200137": 0.0024855293410314333,
+            "7200138": 0.003848540079240486,
+            "7200139": 0.004175506841664895,
+            "7200140": 0.004290007886097611,
+            "7200141": 0.002072358569238055,
+            "7200142": 0.0035747283588119807,
+            "7200143": 0.003447220357207151,
+            "7200144": 0.0039096569363472585,
+            "7200145": 0.002343135452110813,
+            "7200146": 0.004038074592366193,
+            "7200147": 0.003069460126219819,
+            "7200148": 0.0030767322852076713,
+            "7200149": 0.0018799788376725251,
+            "7200150": 0.0030328833573294834,
+            "7200151": 0.004053758434433244,
+            "7200152": 0.003537822223512178,
+            "7200153": 0.001179131172452118
+          }
+        }
+      },
+      "mean_absolute_actual_five_step_change": {
+        "goal.individuation": 0.005774196427157379,
+        "goal.transcendence": 0.023453814419556875,
+        "goal.mineral_acquisition": 0.02602246899818505,
+        "goal.energy_preservation": 0.004220729880064279,
+        "goal.navigation_efficiency": 0.023097604984556083,
+        "goal.lava_exposure": 0.005418520370245785,
+        "goal.boundary_collision": 0.00016492712796902572,
+        "modulator.valence": 0.0346965183786544,
+        "modulator.arousal": 0.015093772048362711,
+        "modulator.approach": 0.03288791649903584,
+        "modulator.resolution": 0.037199292368314256,
+        "modulator.threshold": 0.03653183352045752,
+        "modulator.securing": 0.03718216362597187
+      },
+      "neural_vs_selected_rule": {
+        "mean_episode_mae_reduction": 0.002501778361585344,
+        "bootstrap_95_percent_interval": [
+          0.0020727368546951215,
+          0.0029011147076170446
+        ],
+        "episodes": 24
+      },
+      "neural_vs_ridge": {
+        "mean_episode_mae_reduction": 0.00016584025980775322,
+        "bootstrap_95_percent_interval": [
+          2.9498121882848152e-05,
+          0.00030101548678463643
+        ],
+        "episodes": 24
+      },
+      "neural_beats_all_baselines_for_goals_and_modulators": true,
+      "live_behavior_unchanged": true,
+      "q_and_existing_self_model_frozen": true
+    }
+  ],
+  "mean_across_splits": {
+    "persistence": {
+      "balanced_mae": 0.022717009665366467,
+      "goal_mae": 0.01268547870306771,
+      "modulator_mae": 0.032748540627665225
+    },
+    "nominal_hold": {
+      "balanced_mae": 0.018347042181955302,
+      "goal_mae": 0.010188718312130711,
+      "modulator_mae": 0.0265053660517799
+    },
+    "nominal_trend": {
+      "balanced_mae": 0.005205990911707469,
+      "goal_mae": 0.0030135926769220556,
+      "modulator_mae": 0.007398389146492883
+    },
+    "mean_residual": {
+      "balanced_mae": 0.009526629922341321,
+      "goal_mae": 0.00420481477284277,
+      "modulator_mae": 0.014848445071839874
+    },
+    "ridge": {
+      "balanced_mae": 0.003036755816395117,
+      "goal_mae": 0.0017622133773982727,
+      "modulator_mae": 0.00431129825539196
+    },
+    "neural_32": {
+      "balanced_mae": 0.00292018211792529,
+      "goal_mae": 0.00169139128327639,
+      "modulator_mae": 0.004148972952574191
+    }
+  },
+  "neural_point_estimates_improved_in_every_split": true,
+  "neural_ridge_advantage_has_positive_interval_in_every_split": false
+}

@@ -1,0 +1,668 @@
+{
+  "protocol": {
+    "settings": {
+      "calibration_episodes": 20,
+      "test_episodes": 24,
+      "audit_stride": 5,
+      "replicas": 3,
+      "seed_start": 16000000,
+      "seed_stride": 100000,
+      "ridge_penalty": 1.0,
+      "bootstrap_samples": 2000
+    },
+    "original_settings": {
+      "splits": 3,
+      "pretrain_episodes": 30,
+      "train_episodes": 80,
+      "validation_episodes": 20,
+      "test_episodes": 24,
+      "max_steps": 40,
+      "horizon": 5,
+      "hidden_units": 32,
+      "max_epochs": 300,
+      "patience": 30,
+      "initializations": 3,
+      "batch_size": 128,
+      "learning_rate": 0.001,
+      "weight_decay": 0.0001,
+      "ridge_penalties": [
+        0.01,
+        0.1,
+        1.0,
+        10.0,
+        100.0
+      ],
+      "seed_start": 7000000,
+      "seed_stride": 100000,
+      "agent_seed": 100,
+      "network_seed": 1000
+    },
+    "model_sha256": {
+      "artifacts\\self_model\\neural_learning_curve\\split_1\\model_320.npz": "2577cbdc389bd3cfcf1eb6b23b082057ed3bb777a6d0570fe609385f40b38b40",
+      "artifacts\\self_model\\neural_learning_curve\\split_2\\model_320.npz": "d8637ae3e048b29835342efd5ea50ef26f849f6a4aa2f7747c1c01237efd7513",
+      "artifacts\\self_model\\neural_learning_curve\\split_3\\model_320.npz": "5fde1d9b80ce22bd7742b9b54436396c66e14771dfdaa38bf7056f978689a013"
+    },
+    "objective": "100 * mineral collections - cumulative energy loss over exactly five total moves",
+    "candidate_set": "existing hard-safety mask and Q shortlist; states with >=2 candidates, every fifth step by default",
+    "readout": "fixed-penalty ridge on actual future-state deltas, current state and known immediate collection/hazard cues; calibration only",
+    "direct_baseline": "ridge from same 44 pre-action inputs directly to utility, on same calibration branches",
+    "replicas": "replica 0 preserves snapshot RNG; other replicas share fresh continuation RNG seeds across actions",
+    "tie_break": "retain live action on equal predicted scores; otherwise smallest action index",
+    "decision_criterion": "NN utility gain over current selector has positive episode-bootstrap lower bound in every split; no higher mean energy loss",
+    "limits": [
+      "Five-step branch ranking is not an episode-level deployment trial.",
+      "Action alternatives are outside the original selected-action training distribution.",
+      "Actual-state readout is an unavailable-at-decision diagnostic, not a performance bound.",
+      "Oracle regret uses finite replica means and can be optimistic; bootstrap resamples whole source episodes.",
+      "Full-horizon-only state accuracy/readout fitting; early-terminal utility retained.",
+      "No energy variation means no evidence of improved safety."
+    ],
+    "new_lava_layout_sha256": {
+      "16000000": "3cbfa20f4d3c125b4c97c9c2e2aed25f3a54d04dbddb9163395287cd0982a1bf",
+      "16000001": "133b4f0137886553542e37fb5d36a8233458f86f6c77483b60740a58dad5bdd4",
+      "16000002": "1e0f43e5601c33cc926acee31789fe9f6f5b3f3fbb622451260d7c66b4a43868",
+      "16000003": "4113156abc4937396956f524ed3506f9c860c229a44bfd25bae74ad9719657a6",
+      "16000004": "f612b23d9fb050bba616e970af044d6d3744c34b13c2e7429290bf9a72c09641",
+      "16000005": "a5fe26a1b91041bd041b728bb59daf592405b8820432425040016a546b23828d",
+      "16000006": "a242c6460ceae388af5b5e72732d0a7588774aa4556cad2c5ef333aea74f11e3",
+      "16000007": "d9139e69c7ed5fc2616a2d58dad01eb6ea2d0b0560e93688a0ae4d409aa0e0d3",
+      "16000008": "67582659ebc3f57db829c0e1ce03077ff902e11b2b5efbb301c8526735d4e5c6",
+      "16000009": "910991bab65245ff7e1f0ed137df4b5a4011ba73ca421b602783e1bc7f44f073",
+      "16000010": "1fb480ae5f8b74ea5e8ef38d6b4a7f7c8d5309c318853675725d57f6c84fbfec",
+      "16000011": "a971cad4c7b95607602e2a5b5a2edf90cddb26666d69d5fe9d4f486de372423b",
+      "16000012": "c6621b85268b9e69041d72a181dcc12dfe1fac09c731fb121e37a16deff1d6e8",
+      "16000013": "7968b53569ea1daf444ec34399ea464446913b5b15c80fa2819c079dded7fd91",
+      "16000014": "e4dbb9323a7265799dc3dbcb3cf923ffcc3f54e7c9cb62c50dae2a3823953386",
+      "16000015": "bc9b6a8724334b23cef640696afa3fcfca2acb5f30dccc659e5dd1451aa52e56",
+      "16000016": "b6366fd9573d2739a251ed5a5700866d8f2ea87041cbc1e59e54f853433b3fe8",
+      "16000017": "989e77802f2f0a2080ee55b1d1c21dbe2f63def90fad66d94a3096a83c47eee4",
+      "16000018": "04254c556c79ad52fd017719e43b26d05ffedc651bc31f12b98328e53ded3203",
+      "16000019": "c6240afe2cbae16f35803204ca43fb622a64df7440f8e7529e194549d0dd44c2",
+      "16000020": "fcede06f3ecf49e75bda61beb800ec45afc44338d28b42c59a10a14cba135d4b",
+      "16000021": "e0e300a28a1520a251341bc433203e15c6996230bff4bd31e0f7125aa1fa6cd2",
+      "16000022": "7b7cd1e699e82a7615e7349ded2b0e16a66642ef73d38bf61244707cedde00b4",
+      "16000023": "b1c26d345a1b4c25d0fa1fb728800f2bf151fe822db049580d0a1a7878a0568a",
+      "16000024": "817d763bc25e46c173a95f456607c77b779e441d0ebe8af90e49bd0c7143af71",
+      "16000025": "ad072e6d82908938a2c71b819cb1ec0377638fcfbdcd0f82e1c733fc480e3394",
+      "16000026": "59256fb9820c4ef5dd3bd57e2de492daa48f92c9f2762ec889c9a994456fc0bb",
+      "16000027": "c2ffb0a5b371e98bbb6ebbaf4c486f43339bfd5057e950c883add5372fe8d00c",
+      "16000028": "2005ce01be43e131b6a5acda6de2f96e55a31d0d97c27945ef77245dd3858928",
+      "16000029": "810480aaf4bb4cdc07af7d13ebbe8cb4b97d9338ed1e09046c7c6f02ceb9675b",
+      "16000030": "1b7db83cf70b4dc946590f6af50e452f571ca92196e3cc1b4e40384861ea7097",
+      "16000031": "747a362b3d35befea340cb9901839dc75fdcbdae4a44a4728937c12574965c4f",
+      "16000032": "01b73b4f29b77dcbdee0560e076896c4c5fc0c24b1d2275f8522666b6b19f7d0",
+      "16000033": "b7464e4d9950170bfecdc12d23590f33fcd9c85f9e8828f3589abc46b54b0b58",
+      "16000034": "09e2a22dcd4d273b9ecb1bcc10a19557f02c85b4929a5bcd5e5620482d457a73",
+      "16000035": "40d2a7aaaec83d76c88f4fc7997409c56b6b249cb266029c9adc02d668a91d46",
+      "16000036": "54e1166cd2154919224e929750a6f25693dbd055995101acf0e5a3967d9ce20f",
+      "16000037": "7c4d66c9508749d71dec9ff245e849c9782fbb32acdf5dd8aa0f28e3f3aff796",
+      "16000038": "4a0af7d991ab105976821f8b3920b56d82afd78b3296f4d7a888fd19e6644ddc",
+      "16000039": "3cce279175cbf3146a607aaf13d96864f091b248f03a5c58782d09915843890c",
+      "16000040": "6d3653eb2bf1e196a35b9d14b2c687ef5eece95f4199c0ca1417ac0e518eccfd",
+      "16000041": "44905f1827723f7d9f161fcaf59599e96250c653f9d65c36d0a8c1f653271c6b",
+      "16000042": "097b17b18d82f81f622204a0f93010c63448722df339f9df4ea572bd90fe7c7a",
+      "16000043": "06b5b786e78fc825d899ce94f064b071ecda4a8c08a840d24f0f5b5f73915eb3",
+      "16100000": "b12aefcfb99581c64f1ff24ef9608fb7fe53750766680f1a856248484e6326ae",
+      "16100001": "aa6c9e2ea83cbe589f306dff7b30d6d3fa7657bfb13558d392b7c0c4cdc1b939",
+      "16100002": "891bad6d816a5bc03ae0ce23d82fce4df80034ce2e622ed78d7def24030c4061",
+      "16100003": "cc64a1dc0cea6fe94ae34ce9f34ac970452d405f1cc6c14528ad127f93185819",
+      "16100004": "bf13d23714cc7038015d7cedcf09859a8163a51367dc40f20642528f441bb6f8",
+      "16100005": "f9515832b78b2de747ad9098947e645f6f05a698dc19ebbdd1f01e5d3b5b1d57",
+      "16100006": "7c42732d7adad45c36811fd69f345469b930718c0b8a9124ededeed5a85f0dfa",
+      "16100007": "0e70f1c0e17ed5bd0a8f1c5e4b4adc9aebd8745c76d4fadbdd2f247de2666573",
+      "16100008": "694c162f78e4e0664f88b5b5e28b989ab4c8382b7a29bd9a49f9692490e0614a",
+      "16100009": "704221a565796166ce089a14c946a438aa9f62db52e846e2770010ecb313bcd3",
+      "16100010": "4de22a6a18f0c2e215546d075d5e72abd30aefc9e5cca3043ea65e0e91330229",
+      "16100011": "7887737d2ba65125e1699c0cd2fa56915d95eac3b074f2021e1d38bf7ac90f8e",
+      "16100012": "bc2c904670a9250008711b7fb19e00e9472a850facab7ef7818d87adc5164a0d",
+      "16100013": "1fb651f16479115460e81112ec76bcbe69708fc73424c5981ff0b82109549928",
+      "16100014": "72535dd2ff9f8058f001001bfaabff5bc97d0e89810385f00c6170ae7820d56b",
+      "16100015": "0346eb3691ab490a9ba0a9b715bb56342bf507f03e65612f00d977fabaf71e04",
+      "16100016": "ef8fba4a22533c0f3717fc1a1f6ccb31ddb22565eeb7d8c1c598db82a32753a1",
+      "16100017": "5f77f6eac0401eccce14302a5712e08e4987ebc0a06abae9d07cf6578929103f",
+      "16100018": "9bbdfe8d6cbcf1f3aaccd948fa1f8c4b14bb9d3610bd5c08ebdde20eae7a851e",
+      "16100019": "bea71efb589a23eaf2daf0b4fe29a8079b3f90b44580a99523c809a820fc1442",
+      "16100020": "7f6e45d189a58242e861fdd5e037887090d303bcc54b742e42f2567dedfe2731",
+      "16100021": "9af801afec91512db570d21d574d6a29df02c4a2f37e47fc3d43d5e892d0a14a",
+      "16100022": "767269c95587cdd3cb7f6a1f59ca0dfcfa3a27671721b1a1ccf4edb14029f6ef",
+      "16100023": "c79e9a262c49c8b9b578c2d51abf3b08fc55b94789cee29751ff01d65d623ff7",
+      "16100024": "f23fc12abea30c1a17b3679142e3d6714b4c2bf3e87d9dc71aef93b563b7595f",
+      "16100025": "29e9362c2a4b1e87580a30cec6ff93ce130df88cf26f62cff232149678ac8540",
+      "16100026": "66c268e7dec34a8ba4b59a112c7d357430ed6598762fafc5d9a124fd8ac6b58e",
+      "16100027": "36ac453d6137abdf48847b5ac0ef137a772b60f388698476124eb901ad991c1b",
+      "16100028": "b3af4da6b8f8ad939f3d6c75a4323bdd0dece8caba828722bb05e675a6e549c2",
+      "16100029": "3db4a50fe53513e487915fea5752e9d588afe90f2d875b24ac407d823bf6387d",
+      "16100030": "f5b084a698f9fe8c8a3a1bc6497d7000cf19e80b92404c646a36a99f33c682e3",
+      "16100031": "f98fce206fcf815274a0d0cfec802fe242db81cc8f0860e71c4889b9a5dc807b",
+      "16100032": "460b686021551c2a442acd7baa5c8cc1e1a1536d6a576348fc3ae98224cdf190",
+      "16100033": "fc1b84d710309fea1b4e43112c316d941748079534256f50f85dc4e1de619320",
+      "16100034": "e2cd02034b079706f5489531122055a7ca2e42bf5af8746e4d2bbf27ded60aa4",
+      "16100035": "b8d69396ff30a23763b5d14cf3d1b075811df0b3666c9226ac63078ee4791b9f",
+      "16100036": "5e57a5a2f49bd67fd069b5b5df919aadb818e2e7e65e7a925b801e588762c0c5",
+      "16100037": "a05590a0e731a0e986c3b9bb3968728c01c4e4524c34c0bed5fc74bbcab81dca",
+      "16100038": "849f5b435ada4ed49a57c8fe65da684468bbb58dfde8a324436335f5e4017966",
+      "16100039": "f287ab5a5a138419ced0af910e7d641d02ea36e58394394c55b83651f9d8e527",
+      "16100040": "f2c91ec16e31523fa90ac4a1e183b02f1a1b06a7544c0b31345362a923019d32",
+      "16100041": "37abc086d198607e14fa13a18de37df0320472e8b2de531b6b0c41e0cf2f60e5",
+      "16100042": "f652efd5b4f96680bad58756ef5bf5f2c13afaffba9cc15218b14c40f8b93f5a",
+      "16100043": "3c365183d794ceb8f82a29b1f8a1eccf51d062c7d993c7cc08e0fdebcb24a24f",
+      "16200000": "f2f4e747db9ff958ba9ede6c2ddaf61a5670d69f176c6b291a62db1e23d5c12a",
+      "16200001": "a5c93cd0fcd992663211488bb7da20016f1092022a9c361693c20f79c6ce0a18",
+      "16200002": "20565401693a9198214fce5b16f8f4b1ffb58a70edfe85d00418d3a1af743bda",
+      "16200003": "a163b9c25a25678209e78e9a45ddc422d9fcc294d86db715a85ad5dc89e4b50c",
+      "16200004": "f904322b4ded114e4632855b11f9067c30561f3765b842d60c402ad1c977166f",
+      "16200005": "38c2391df2c04bf2b91ee1c2d14f925a817804f5bf0bb69a0ca97cc30c63fdcf",
+      "16200006": "ed50ba48aea7ca095d91b08a38178150434521fc3518428527be45e067273e43",
+      "16200007": "e649ca67162cf00a73885fcdb4a6f753f824a34da12a59865bd9dde5f881f7c4",
+      "16200008": "e8642fd38bb2f25a40a4f738344aad609633d2504abd5f6a3c62586051020761",
+      "16200009": "cceab4f0b932749915e7126adfa7b005caaad1b63a0272f129a79546c9e6e620",
+      "16200010": "dc1dc08e468b33b81183deedb9575efd6cbd15899549196e1aa248bf372b23fa",
+      "16200011": "0c9c77ccba1c62dcc937487902c60758b379e9d70232cbe78fcdbee8f78056a0",
+      "16200012": "307e30da9540f1d98f7f7066a8260352a1bbe4e6856a3089df5e6e1745c4f78a",
+      "16200013": "8bd135a90f6007c9650621774776b6e1201856ff1be0f332898112518948d506",
+      "16200014": "66f941b6a2eefc14a246b0561436858a5f4a5f7d79e284b32b7993e9f89b3d82",
+      "16200015": "8df989b7476871b7285bb3bad6107b3eecbb4d189546f6ae41288cf31062c6d7",
+      "16200016": "d3c6d472686ffc95e3f61e45b3f672b8f0653722efbc89cd511a8c23209369f2",
+      "16200017": "078ad2dc0167613517c36315debcea076a13552a7312a32aa1ebf0bbc1ac10d2",
+      "16200018": "3595502d81a4c40979b8086ddee551c8c18a4c16987fa17d05cf12933850e570",
+      "16200019": "7284c4278415c1e24fd2de926c156d71814555ccf0a04d03614715dd4c773d2b",
+      "16200020": "dc9eb11a1974a9078f1703b969bd137d293e4f19ff8c54e6d520f60f0c82f444",
+      "16200021": "2c3cbca55b93bfae9ed0ac9c59469e583ccdd415a6b741aaa90af28c0805a1c3",
+      "16200022": "fb947bcb0574b6e8cd77bcdd792804f31a2a4c3c0d7fe7f43ff217e4bbc3ae69",
+      "16200023": "54ec92ef41447ce6dd85f792b1b1933d0490b24b9b30108cc7aaca0dbb0da755",
+      "16200024": "1d88b31d55a438c296154a91647f5b0690902dbf1c863a44bb878dcc48782eaa",
+      "16200025": "260291b4f39147a0b1084ed85bb014222d7a8b832b7cca1479b9c88aff401974",
+      "16200026": "b2c41ec0a750c5798341864380182fced8854f8a0744b9d1983299543debc134",
+      "16200027": "20f334b93427e99b52f63598f6d0235f5d6954c854cfcac1f97025d56c1783de",
+      "16200028": "5cd740ba64998883c9f6d379419632346b43ae20271fcb22ed0eda2da410de38",
+      "16200029": "527210c0a5b733997d6e12be8bbf3c0ba5f3e39002a660f0d3f6d6a92630c134",
+      "16200030": "0863d145527e25e9eabd3a0bfe719f53e0ab707bc707ec4a3d55cff16d898dcb",
+      "16200031": "d67ae4f8bc529ff1b2c1f8fc1722246f2c310e5c9512f691f02c81e471c9e934",
+      "16200032": "0595ae887aa8abd91f690499f7ff49b9dfe8854c934399ec333538248f6f3fdc",
+      "16200033": "b63b2011c8a934e2e8dcd414f17307cda137932589f9ab3136bda92f4a99a64c",
+      "16200034": "92459cea85541603e3c77f01448d9834b14746b73dc1d2289304b53ae79f2aeb",
+      "16200035": "d60e82f4b0a19124ed9f05cd33bae8d625468441a55e06c32396dac82bb3031d",
+      "16200036": "59e3eb731d9d32dd0b61f85205f2653aa60688f8da79d1bb5dbfedccd7c0b4a9",
+      "16200037": "effcc2890879533c608ef9e5c7c410be7e0dfce5be26597bd572a58cff9ffea3",
+      "16200038": "a1260b93ad51a7d35b89481d076e0257fa0b667b567d5b9c85c49f6fff33bce7",
+      "16200039": "5fb0574d6dfeb9b8cc86859430ba4fea34944a7393ac0d8ccd663f493eae475b",
+      "16200040": "bd6c015462659646f7ef4c9644b90246a9b7db9ea4a71adaa67e256ef789da86",
+      "16200041": "0aab291edd4b14f32e7ddd9c72929f02adc75399b2ee45483a9011a35f808292",
+      "16200042": "ed9794257cedeedf7b4ad320031219a713ca808c38c73a6d4874cf53de9c74b6",
+      "16200043": "8c5d85f58e2d6ec6b4acb28e39457c36ffe6d2c17179db7c1582d1265f06cb6b"
+    }
+  },
+  "splits": [
+    {
+      "audited_states": 123,
+      "branches": 1170,
+      "energy_loss_branches": 0,
+      "incomplete_branches": 0,
+      "methods": {
+        "actual_state_readout": {
+          "states": 123,
+          "informative_states": 58,
+          "mean_utility": 50.13550135501355,
+          "mean_regret": 0.8130081300813008,
+          "mean_collections": 0.5013550135501355,
+          "mean_energy_loss": 0.0,
+          "changed_choices": 71,
+          "optimal_fraction_informative": 0.9827586206896551,
+          "pairwise_accuracy": 0.9929078014184397
+        },
+        "current_selector": {
+          "states": 123,
+          "informative_states": 58,
+          "mean_utility": 20.596205962059624,
+          "mean_regret": 30.35230352303523,
+          "mean_collections": 0.20596205962059616,
+          "mean_energy_loss": 0.0,
+          "changed_choices": 0,
+          "optimal_fraction_informative": 0.3275862068965517,
+          "pairwise_accuracy": 0.5390070921985816
+        },
+        "direct_features": {
+          "states": 123,
+          "informative_states": 58,
+          "mean_utility": 42.00542005420054,
+          "mean_regret": 8.94308943089431,
+          "mean_collections": 0.4200542005420054,
+          "mean_energy_loss": 0.0,
+          "changed_choices": 69,
+          "optimal_fraction_informative": 0.7758620689655172,
+          "pairwise_accuracy": 0.8723404255319149
+        },
+        "neural_32": {
+          "states": 123,
+          "informative_states": 58,
+          "mean_utility": 40.37940379403794,
+          "mean_regret": 10.56910569105691,
+          "mean_collections": 0.4037940379403794,
+          "mean_energy_loss": 0.0,
+          "changed_choices": 62,
+          "optimal_fraction_informative": 0.7758620689655172,
+          "pairwise_accuracy": 0.8723404255319149
+        },
+        "nominal_trend": {
+          "states": 123,
+          "informative_states": 58,
+          "mean_utility": 41.46341463414634,
+          "mean_regret": 9.48509485094851,
+          "mean_collections": 0.4146341463414634,
+          "mean_energy_loss": 0.0,
+          "changed_choices": 45,
+          "optimal_fraction_informative": 0.7931034482758621,
+          "pairwise_accuracy": 0.8404255319148937
+        },
+        "ridge": {
+          "states": 123,
+          "informative_states": 58,
+          "mean_utility": 40.921409214092144,
+          "mean_regret": 10.02710027100271,
+          "mean_collections": 0.40921409214092136,
+          "mean_energy_loss": 0.0,
+          "changed_choices": 59,
+          "optimal_fraction_informative": 0.7931034482758621,
+          "pairwise_accuracy": 0.8723404255319149
+        }
+      },
+      "neural_comparisons": {
+        "current_selector": {
+          "episodes": 24,
+          "mean_episode_utility_gain": 21.31448412698413,
+          "bootstrap_95_percent_interval": [
+            9.86255787037037,
+            34.78377149470899
+          ]
+        },
+        "ridge": {
+          "episodes": 24,
+          "mean_episode_utility_gain": -0.39682539682539675,
+          "bootstrap_95_percent_interval": [
+            -1.1904761904761902,
+            0.0
+          ]
+        },
+        "direct_features": {
+          "episodes": 24,
+          "mean_episode_utility_gain": -0.9011243386243386,
+          "bootstrap_95_percent_interval": [
+            -6.540178571428571,
+            3.637566137566138
+          ]
+        },
+        "actual_state_readout": {
+          "episodes": 24,
+          "mean_episode_utility_gain": -9.928902116402117,
+          "bootstrap_95_percent_interval": [
+            -19.422536375661377,
+            -2.4305555555555554
+          ]
+        }
+      },
+      "state_mae": {
+        "neural_32": {
+          "selected": {
+            "count": 369,
+            "mae": 0.002461977934310352
+          },
+          "alternative": {
+            "count": 801,
+            "mae": 0.003313352474527804
+          }
+        },
+        "ridge": {
+          "selected": {
+            "count": 369,
+            "mae": 0.0028193880982853954
+          },
+          "alternative": {
+            "count": 801,
+            "mae": 0.0039364216968896725
+          }
+        },
+        "nominal_trend": {
+          "selected": {
+            "count": 369,
+            "mae": 0.005279131139304708
+          },
+          "alternative": {
+            "count": 801,
+            "mae": 0.005773287795728875
+          }
+        }
+      },
+      "split": 1,
+      "live_behavior_unchanged": true,
+      "q_frozen": true
+    },
+    {
+      "audited_states": 124,
+      "branches": 1185,
+      "energy_loss_branches": 0,
+      "incomplete_branches": 0,
+      "methods": {
+        "actual_state_readout": {
+          "states": 124,
+          "informative_states": 50,
+          "mean_utility": 41.935483870967744,
+          "mean_regret": 0.8064516129032258,
+          "mean_collections": 0.41935483870967744,
+          "mean_energy_loss": 0.0,
+          "changed_choices": 73,
+          "optimal_fraction_informative": 0.96,
+          "pairwise_accuracy": 0.9453125
+        },
+        "current_selector": {
+          "states": 124,
+          "informative_states": 50,
+          "mean_utility": 18.279569892473113,
+          "mean_regret": 24.462365591397848,
+          "mean_collections": 0.1827956989247312,
+          "mean_energy_loss": 0.0,
+          "changed_choices": 0,
+          "optimal_fraction_informative": 0.3,
+          "pairwise_accuracy": 0.546875
+        },
+        "direct_features": {
+          "states": 124,
+          "informative_states": 50,
+          "mean_utility": 39.516129032258064,
+          "mean_regret": 3.225806451612903,
+          "mean_collections": 0.3951612903225806,
+          "mean_energy_loss": 0.0,
+          "changed_choices": 89,
+          "optimal_fraction_informative": 0.9,
+          "pairwise_accuracy": 0.8984375
+        },
+        "neural_32": {
+          "states": 124,
+          "informative_states": 50,
+          "mean_utility": 35.483870967741936,
+          "mean_regret": 7.258064516129033,
+          "mean_collections": 0.3548387096774194,
+          "mean_energy_loss": 0.0,
+          "changed_choices": 68,
+          "optimal_fraction_informative": 0.78,
+          "pairwise_accuracy": 0.859375
+        },
+        "nominal_trend": {
+          "states": 124,
+          "informative_states": 50,
+          "mean_utility": 36.82795698924731,
+          "mean_regret": 5.913978494623656,
+          "mean_collections": 0.3682795698924731,
+          "mean_energy_loss": 0.0,
+          "changed_choices": 46,
+          "optimal_fraction_informative": 0.82,
+          "pairwise_accuracy": 0.8671875
+        },
+        "ridge": {
+          "states": 124,
+          "informative_states": 50,
+          "mean_utility": 34.67741935483871,
+          "mean_regret": 8.06451612903226,
+          "mean_collections": 0.3467741935483871,
+          "mean_energy_loss": 0.0,
+          "changed_choices": 68,
+          "optimal_fraction_informative": 0.76,
+          "pairwise_accuracy": 0.84375
+        }
+      },
+      "neural_comparisons": {
+        "current_selector": {
+          "episodes": 24,
+          "mean_episode_utility_gain": 18.66071428571429,
+          "bootstrap_95_percent_interval": [
+            8.540674603174603,
+            30.334408068783066
+          ]
+        },
+        "ridge": {
+          "episodes": 24,
+          "mean_episode_utility_gain": 0.5952380952380952,
+          "bootstrap_95_percent_interval": [
+            0.0,
+            1.7857142857142858
+          ]
+        },
+        "direct_features": {
+          "episodes": 24,
+          "mean_episode_utility_gain": -4.738756613756615,
+          "bootstrap_95_percent_interval": [
+            -9.107473544973546,
+            -0.7109788359788359
+          ]
+        },
+        "actual_state_readout": {
+          "episodes": 24,
+          "mean_episode_utility_gain": -7.235449735449737,
+          "bootstrap_95_percent_interval": [
+            -11.986276455026454,
+            -2.9529596560846563
+          ]
+        }
+      },
+      "state_mae": {
+        "neural_32": {
+          "selected": {
+            "count": 372,
+            "mae": 0.002841321250553059
+          },
+          "alternative": {
+            "count": 813,
+            "mae": 0.003342594440465365
+          }
+        },
+        "ridge": {
+          "selected": {
+            "count": 372,
+            "mae": 0.0031661385661351693
+          },
+          "alternative": {
+            "count": 813,
+            "mae": 0.004133754503375362
+          }
+        },
+        "nominal_trend": {
+          "selected": {
+            "count": 372,
+            "mae": 0.00533354342046333
+          },
+          "alternative": {
+            "count": 813,
+            "mae": 0.005525274841307147
+          }
+        }
+      },
+      "split": 2,
+      "live_behavior_unchanged": true,
+      "q_frozen": true
+    },
+    {
+      "audited_states": 127,
+      "branches": 1173,
+      "energy_loss_branches": 0,
+      "incomplete_branches": 0,
+      "methods": {
+        "actual_state_readout": {
+          "states": 127,
+          "informative_states": 46,
+          "mean_utility": 40.94488188976378,
+          "mean_regret": 0.7874015748031497,
+          "mean_collections": 0.4094488188976378,
+          "mean_energy_loss": 0.0,
+          "changed_choices": 76,
+          "optimal_fraction_informative": 0.9347826086956522,
+          "pairwise_accuracy": 0.9469026548672567
+        },
+        "current_selector": {
+          "states": 127,
+          "informative_states": 46,
+          "mean_utility": 21.25984251968504,
+          "mean_regret": 20.47244094488189,
+          "mean_collections": 0.2125984251968504,
+          "mean_energy_loss": 0.0,
+          "changed_choices": 0,
+          "optimal_fraction_informative": 0.34782608695652173,
+          "pairwise_accuracy": 0.5398230088495575
+        },
+        "direct_features": {
+          "states": 127,
+          "informative_states": 46,
+          "mean_utility": 37.53280839895013,
+          "mean_regret": 4.199475065616798,
+          "mean_collections": 0.3753280839895013,
+          "mean_energy_loss": 0.0,
+          "changed_choices": 80,
+          "optimal_fraction_informative": 0.8043478260869565,
+          "pairwise_accuracy": 0.8849557522123894
+        },
+        "neural_32": {
+          "states": 127,
+          "informative_states": 46,
+          "mean_utility": 36.482939632545936,
+          "mean_regret": 5.249343832020997,
+          "mean_collections": 0.36482939632545935,
+          "mean_energy_loss": 0.0,
+          "changed_choices": 61,
+          "optimal_fraction_informative": 0.782608695652174,
+          "pairwise_accuracy": 0.8761061946902655
+        },
+        "nominal_trend": {
+          "states": 127,
+          "informative_states": 46,
+          "mean_utility": 37.53280839895013,
+          "mean_regret": 4.199475065616798,
+          "mean_collections": 0.3753280839895013,
+          "mean_energy_loss": 0.0,
+          "changed_choices": 38,
+          "optimal_fraction_informative": 0.8260869565217391,
+          "pairwise_accuracy": 0.8761061946902655
+        },
+        "ridge": {
+          "states": 127,
+          "informative_states": 46,
+          "mean_utility": 36.482939632545936,
+          "mean_regret": 5.249343832020997,
+          "mean_collections": 0.36482939632545935,
+          "mean_energy_loss": 0.0,
+          "changed_choices": 62,
+          "optimal_fraction_informative": 0.782608695652174,
+          "pairwise_accuracy": 0.8672566371681416
+        }
+      },
+      "neural_comparisons": {
+        "current_selector": {
+          "episodes": 24,
+          "mean_episode_utility_gain": 18.9484126984127,
+          "bootstrap_95_percent_interval": [
+            6.926669973544975,
+            32.95386904761905
+          ]
+        },
+        "ridge": {
+          "episodes": 24,
+          "mean_episode_utility_gain": 0.26455026455026465,
+          "bootstrap_95_percent_interval": [
+            -1.3566468253968254,
+            2.1164021164021167
+          ]
+        },
+        "direct_features": {
+          "episodes": 24,
+          "mean_episode_utility_gain": -0.6878306878306878,
+          "bootstrap_95_percent_interval": [
+            -3.154927248677249,
+            1.917989417989418
+          ]
+        },
+        "actual_state_readout": {
+          "episodes": 24,
+          "mean_episode_utility_gain": -3.961640211640212,
+          "bootstrap_95_percent_interval": [
+            -7.222222222222221,
+            -1.3219246031746077
+          ]
+        }
+      },
+      "state_mae": {
+        "neural_32": {
+          "selected": {
+            "count": 381,
+            "mae": 0.0026396938552063712
+          },
+          "alternative": {
+            "count": 792,
+            "mae": 0.0036407831942456502
+          }
+        },
+        "ridge": {
+          "selected": {
+            "count": 381,
+            "mae": 0.0029623271267558544
+          },
+          "alternative": {
+            "count": 792,
+            "mae": 0.004436040739376679
+          }
+        },
+        "nominal_trend": {
+          "selected": {
+            "count": 381,
+            "mae": 0.0052408105248732606
+          },
+          "alternative": {
+            "count": 792,
+            "mae": 0.005226936917039792
+          }
+        }
+      },
+      "split": 3,
+      "live_behavior_unchanged": true,
+      "q_frozen": true
+    }
+  ],
+  "aggregate": {
+    "actual_state_readout": {
+      "mean_utility": 44.29590017825312,
+      "mean_regret": 0.8021390374331551,
+      "mean_collections": 0.44295900178253117,
+      "mean_energy_loss": 0.0
+    },
+    "current_selector": {
+      "mean_utility": 20.053475935828878,
+      "mean_regret": 25.044563279857396,
+      "mean_collections": 0.20053475935828877,
+      "mean_energy_loss": 0.0
+    },
+    "direct_features": {
+      "mean_utility": 39.66131907308379,
+      "mean_regret": 5.436720142602496,
+      "mean_collections": 0.39661319073083773,
+      "mean_energy_loss": 0.0
+    },
+    "neural_32": {
+      "mean_utility": 37.43315508021391,
+      "mean_regret": 7.66488413547237,
+      "mean_collections": 0.37433155080213903,
+      "mean_energy_loss": 0.0
+    },
+    "nominal_trend": {
+      "mean_utility": 38.59180035650625,
+      "mean_regret": 6.506238859180036,
+      "mean_collections": 0.38591800356506234,
+      "mean_energy_loss": 0.0
+    },
+    "ridge": {
+      "mean_utility": 37.34402852049911,
+      "mean_regret": 7.754010695187167,
+      "mean_collections": 0.37344028520499106,
+      "mean_energy_loss": 0.0
+    }
+  },
+  "audited_states": 374,
+  "branches": 3528,
+  "forecast_models_unchanged": true,
+  "nn_improves_current_selector_in_every_split": true
+}
